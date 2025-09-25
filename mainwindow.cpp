@@ -130,6 +130,7 @@ void MainWindow::deleteItem()
         delete pEnt;
 	}
 	view->update();
+
 #elif
     foreach(QGraphicsItem * item, scene->selectedItems()) {
         if (item->type() == Arrow::Type) {
