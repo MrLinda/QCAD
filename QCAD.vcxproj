@@ -1,0 +1,187 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{3373EF65-F034-42BA-8EB6-365F46AAA9A3}</ProjectGuid>
+    <Keyword>QtVS_v304</Keyword>
+    <WindowsTargetPlatformVersion Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">10.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">10.0</WindowsTargetPlatformVersion>
+    <QtMsBuild Condition="'$(QtMsBuild)'=='' OR !Exists('$(QtMsBuild)\qt.targets')">$(MSBuildProjectDirectory)\QtMsBuild</QtMsBuild>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v143</PlatformToolset>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v143</PlatformToolset>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Condition="Exists('$(QtMsBuild)\qt_defaults.props')">
+    <Import Project="$(QtMsBuild)\qt_defaults.props" />
+  </ImportGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
+    <QtInstall>5.15.2_msvc2019_64</QtInstall>
+    <QtModules>core;gui;widgets</QtModules>
+    <QtBuildConfig>debug</QtBuildConfig>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
+    <QtInstall>5.15.2_msvc2019_64</QtInstall>
+    <QtModules>core;gui;widgets</QtModules>
+    <QtBuildConfig>release</QtBuildConfig>
+  </PropertyGroup>
+  <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
+    <Message Importance="High" Text="QtMsBuild: could not locate qt.targets, qt.props; project may not build correctly." />
+  </Target>
+  <ImportGroup Label="ExtensionSettings" />
+  <ImportGroup Label="Shared" />
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(QtMsBuild)\Qt.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(QtMsBuild)\Qt.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
+    <ClCompile>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="Configuration">
+    <ClCompile>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="Arc.cpp" />
+    <ClCompile Include="CCommandQrue.cpp" />
+    <ClCompile Include="Circle.cpp" />
+    <ClCompile Include="ELLIPSE.cpp" />
+    <ClCompile Include="ENTITY.CPP" />
+    <ClCompile Include="LINE.CPP" />
+    <ClCompile Include="MCommand.cpp" />
+    <ClCompile Include="MCreateArc.cpp" />
+    <ClCompile Include="MCreateCircle.cpp" />
+    <ClCompile Include="MCreateEllipse.cpp" />
+    <ClCompile Include="MCreateLine.cpp" />
+    <ClCompile Include="MCREATEPOLYGON.CPP" />
+    <ClCompile Include="MCreateRectangle.cpp" />
+    <ClCompile Include="MCreateText.cpp" />
+    <ClCompile Include="MIRRORCMD.CPP" />
+    <ClCompile Include="MMoveCmd.cpp" />
+    <ClCompile Include="MOVECMD.CPP" />
+    <ClCompile Include="MPolygon.cpp" />
+    <ClCompile Include="MSelectCmd.cpp" />
+    <ClCompile Include="MZoomPan.cpp" />
+    <ClCompile Include="MZoomWindow.cpp" />
+    <ClCompile Include="QCADView.cpp" />
+    <ClCompile Include="RECTANGLE.cpp" />
+    <ClCompile Include="ROTATECMD.CPP" />
+    <ClCompile Include="TEXT.cpp" />
+    <QtRcc Include="QCAD.qrc" />
+    <QtUic Include="QCAD.ui" />
+    <QtMoc Include="QCAD.h" />
+    <ClCompile Include="arrow.cpp" />
+    <ClCompile Include="CHGVIEWCMD.CPP" />
+    <ClCompile Include="COMMAND.Cpp" />
+    <ClCompile Include="CREATEARC.CPP" />
+    <ClCompile Include="CREATECIRCLE.CPP" />
+    <ClCompile Include="CREATEELLIPSE.CPP" />
+    <ClCompile Include="CREATELINE.CPP" />
+    <ClCompile Include="CREATEPOLYGON.CPP" />
+    <ClCompile Include="CREATERECT.CPP" />
+    <ClCompile Include="diagramitem.cpp" />
+    <ClCompile Include="diagramscene.cpp" />
+    <ClCompile Include="diagramtextitem.cpp" />
+    <ClCompile Include="mainwindow.cpp" />
+    <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="arrow.h" />
+    <ClInclude Include="CCommandQrue.h" />
+    <ClInclude Include="CHGVIEWCMD.H" />
+    <ClInclude Include="COMMAND.H" />
+    <ClInclude Include="CREATECMD.H" />
+    <ClInclude Include="diagramitem.h" />
+    <ClInclude Include="ENTITY.H" />
+    <ClInclude Include="MCommand.h" />
+    <ClInclude Include="MCreateArc.h" />
+    <ClInclude Include="MCreateCircle.h" />
+    <ClInclude Include="MCreateEllipse.h" />
+    <ClInclude Include="MCreateLine.h" />
+    <ClInclude Include="MCreatePolygon.h" />
+    <ClInclude Include="MCreateRectangle.h" />
+    <ClInclude Include="MCreateText.h" />
+    <ClInclude Include="MMoveCmd.h" />
+    <ClInclude Include="MODIFYCMD.H" />
+    <ClInclude Include="MSelectCmd.h" />
+    <ClInclude Include="MZoomPan.h" />
+    <ClInclude Include="MZoomWindow.h" />
+    <ClInclude Include="QCADView.h" />
+    <QtMoc Include="mainwindow.h" />
+    <QtMoc Include="diagramtextitem.h" />
+    <QtMoc Include="diagramscene.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="images\background1.png" />
+    <Image Include="images\background2.png" />
+    <Image Include="images\background3.png" />
+    <Image Include="images\background4.png" />
+    <Image Include="images\bold.png" />
+    <Image Include="images\bringtofront.png" />
+    <Image Include="images\delete.png" />
+    <Image Include="images\floodfill.png" />
+    <Image Include="images\italic.png" />
+    <Image Include="images\linecolor.png" />
+    <Image Include="images\linepointer.png" />
+    <Image Include="images\pointer.png" />
+    <Image Include="images\sendtoback.png" />
+    <Image Include="images\textpointer.png" />
+    <Image Include="images\underline.png" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
+    <Import Project="$(QtMsBuild)\qt.targets" />
+  </ImportGroup>
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

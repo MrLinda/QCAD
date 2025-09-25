@@ -1,0 +1,287 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>qml;cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>qrc;rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Form Files">
+      <UniqueIdentifier>{99349809-55BA-4b9d-BF79-8FDBB0286EB3}</UniqueIdentifier>
+      <Extensions>ui</Extensions>
+    </Filter>
+    <Filter Include="Translation Files">
+      <UniqueIdentifier>{639EADAA-A684-42e4-A9AD-28FC9BCB8F7C}</UniqueIdentifier>
+      <Extensions>ts</Extensions>
+    </Filter>
+    <Filter Include="Entity Files">
+      <UniqueIdentifier>{ae0945b5-4985-47a5-a6bb-b07b3138ebe7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Command0-Files">
+      <UniqueIdentifier>{8e6b937f-7eb9-476b-8725-d76d6e4edfa3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MCommand Files">
+      <UniqueIdentifier>{22d57aae-6335-4363-a93f-9e89ce8fe0a6}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <QtRcc Include="QCAD.qrc">
+      <Filter>Resource Files</Filter>
+    </QtRcc>
+    <QtUic Include="QCAD.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtMoc Include="QCAD.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="arrow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="diagramitem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="diagramscene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="diagramtextitem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mainwindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="COMMAND.Cpp">
+      <Filter>Command0-Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CREATELINE.CPP">
+      <Filter>Command0-Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CREATEARC.CPP">
+      <Filter>Command0-Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CREATECIRCLE.CPP">
+      <Filter>Command0-Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CREATEELLIPSE.CPP">
+      <Filter>Command0-Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CREATERECT.CPP">
+      <Filter>Command0-Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CREATEPOLYGON.CPP">
+      <Filter>Command0-Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CHGVIEWCMD.CPP">
+      <Filter>Command0-Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MIRRORCMD.CPP">
+      <Filter>Command0-Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MOVECMD.CPP">
+      <Filter>Command0-Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ROTATECMD.CPP">
+      <Filter>Command0-Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CCommandQrue.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="QCADView.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ENTITY.CPP">
+      <Filter>Entity Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LINE.CPP">
+      <Filter>Entity Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MCommand.cpp">
+      <Filter>MCommand Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MCreateLine.cpp">
+      <Filter>MCommand Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MSelectCmd.cpp">
+      <Filter>MCommand Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MCREATEPOLYGON.CPP">
+      <Filter>MCommand Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MCreateRectangle.cpp">
+      <Filter>MCommand Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MPolygon.cpp">
+      <Filter>Entity Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Circle.cpp">
+      <Filter>Entity Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Arc.cpp">
+      <Filter>Entity Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MCreateCircle.cpp">
+      <Filter>MCommand Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MCreateArc.cpp">
+      <Filter>MCommand Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ELLIPSE.cpp">
+      <Filter>Entity Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TEXT.cpp">
+      <Filter>Entity Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MCreateEllipse.cpp">
+      <Filter>MCommand Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MCreateText.cpp">
+      <Filter>MCommand Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MMoveCmd.cpp">
+      <Filter>MCommand Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RECTANGLE.cpp">
+      <Filter>Entity Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MZoomWindow.cpp">
+      <Filter>MCommand Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MZoomPan.cpp">
+      <Filter>MCommand Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="arrow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="diagramitem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="COMMAND.H">
+      <Filter>Command0-Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CREATECMD.H">
+      <Filter>Command0-Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CHGVIEWCMD.H">
+      <Filter>Command0-Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MODIFYCMD.H">
+      <Filter>Command0-Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CCommandQrue.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="QCADView.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ENTITY.H">
+      <Filter>Entity Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MCommand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MCreateLine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MSelectCmd.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MCreateRectangle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MCreatePolygon.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MCreateArc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MCreateCircle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MCreateEllipse.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MCreateText.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MMoveCmd.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MZoomPan.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MZoomWindow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="diagramscene.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="diagramtextitem.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="mainwindow.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="images\background1.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\background2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\background3.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\background4.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\bold.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\bringtofront.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\delete.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\floodfill.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\italic.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\linecolor.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\linepointer.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\pointer.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\sendtoback.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\textpointer.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="images\underline.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+</Project>
