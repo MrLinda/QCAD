@@ -160,6 +160,12 @@
     <ClCompile Include="MZoomPan.cpp">
       <Filter>MCommand Files</Filter>
     </ClCompile>
+    <ClCompile Include="MAnnotation.cpp">
+      <Filter>Entity Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MCreateAnnotation.cpp">
+      <Filter>MCommand Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="arrow.h">
@@ -223,6 +229,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MZoomWindow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MCreateAnnotation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

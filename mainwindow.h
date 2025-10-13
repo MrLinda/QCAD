@@ -78,6 +78,7 @@ private slots:
     void drawEllipse();
     void drawPolygon();
     void drawText();
+	void drawAnnotation();
 
     //ÐÞ¸Ä
     void moveEntity();
@@ -173,6 +174,7 @@ private:
     QAction* drawEllipseAction;
     QAction* drawPolygonAction;
     QAction* drawTextAction;
+	QAction* drawAnnotationAction;
     //Modify Action
     QAction* selectEntityAction;
     QAction* regenEntityAction;

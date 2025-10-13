@@ -39,6 +39,7 @@ public:
     void drawArc();
     void drawEllipse();
     void drawText();
+	void drawAnnotation();
 
 private:
     QColor m_lineColor;

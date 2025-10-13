@@ -12,6 +12,13 @@ double Distance(QPointF& posSrc1, QPointF& posSrc2)
 	return dis;
 }
 
+double Distance(QPoint& posSrc1, QPoint& posSrc2)
+{
+	double dis = sqrt((posSrc1.x() - posSrc2.x()) * (posSrc1.x() - posSrc2.x()) +\
+		 (posSrc1.y() - posSrc2.y()) * (posSrc1.y() - posSrc2.y()));
+	return dis;
+}
+
 double GetAngleToXAxis(QPointF& posSrc1, QPointF& posSrc2)
 {
 	QPointF pos1(posSrc1), pos2(posSrc2);

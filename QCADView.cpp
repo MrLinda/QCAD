@@ -9,6 +9,7 @@
 #include "MCreateCircle.h"
 #include "MCreateEllipse.h"
 #include "MCreateText.h"
+#include "MCreateAnnotation.h"
 #include "MSelectCmd.h"
 #include "MMoveCmd.h"
 #include "MZoomPan.h"
@@ -281,6 +282,15 @@ void QCADView::drawText()
 
 	delete m_pCmd;
 	m_pCmd = new MCreateText(this);
+}
+
+void QCADView::drawAnnotation()
+{
+	//QPainter pDC(this);
+	if (m_pCmd && m_pCmd->GetType() == ctCreateAnnotation)
+		return;
+	delete m_pCmd;
+	m_pCmd = new MCreateAnnotation(this, MAnnotation::atRoughness);	//Ĭ�ϴֲڶ�
 }
 
 void QCADView::setScale(double scale)

@@ -59,7 +59,10 @@ MainWindow::MainWindow()
     //QLabel* labCellIndex = new QLabel("当前坐标: 0.0", this);
     //labCellIndex->setMinimumWidth(150);
     //statusBar()->showMessage("coord: 0,0");
-     
+
+    QString sScnPos = QStringLiteral("就绪");
+    statusBar()->showMessage(sScnPos);
+
     view->setMouseTracking(true);
     //view->fitInView(0, 0, 800, 600);
 
@@ -530,6 +533,10 @@ void MainWindow::createActions()
     drawTextAction->setStatusTip(QStringLiteral("文本"));
     connect(drawTextAction, SIGNAL(triggered()), this, SLOT(drawText()));
 
+    drawAnnotationAction = new QAction(QIcon("images/drawAnnotation.png"),
+		QStringLiteral("符号标注"), this);
+	drawAnnotationAction->setStatusTip(QStringLiteral("符号标注"));
+	connect(drawAnnotationAction, SIGNAL(triggered()), this, SLOT(drawAnnotation()));
     /// <summary>
     /// Modify Actions
     /// </summary>
@@ -680,6 +687,7 @@ void MainWindow::createToolbars()
     drawToolBar->addAction(drawEllipseAction);
     drawToolBar->addAction(drawPolygonAction);
     drawToolBar->addAction(drawTextAction);
+	drawToolBar->addAction(drawAnnotationAction);
 
     // 3.修改：选择，刷新，平移，对称，旋转，删除
     modifyToolBar = addToolBar(tr("modify"));
@@ -1178,6 +1186,7 @@ void MainWindow::unCheckAllCommand()
     drawEllipseAction->setChecked(false);
     drawPolygonAction->setChecked(false);
     drawTextAction->setChecked(false);
+	drawAnnotationAction->setChecked(false);
 
     symetryEntityAction->setChecked(false);
     moveEntityAction->setChecked(false);
@@ -1302,6 +1311,21 @@ void MainWindow::drawText()
 #else
     //scene->drawText();  //未实现
     ;
+#endif // QT_PAINTER
+
+}
+
+void MainWindow::drawAnnotation()
+{
+    drawAnnotationAction->setCheckable(true);
+    unCheckAllCommand();
+    drawAnnotationAction->setChecked(true);
+
+#ifdef QT_PAINTER
+    //QCAD-QPainter版本
+    view->drawAnnotation();
+#else
+    //scene->drawAnnotation();
 #endif // QT_PAINTER
 
 }

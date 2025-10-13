@@ -33,7 +33,8 @@ enum EEntityType // 图元的类型
 	etText		= 8,
 	etPolygon   = 9,
 	etBlock     = 10,
-	etConnect   = 11
+	etConnect   = 11,
+	etAnnotation = 12 //标注
 };
 
 enum EDrawMode // 绘图模式
@@ -53,6 +54,7 @@ void Offset(QPointF& pnt, QPointF off);
 void Offset(QPointF& pnt, double deltax, double deltay);
 void Mirror(QPointF& pos, QPointF p1, QPointF p2);
 extern double Distance(QPointF& posSrc1, QPointF& posSrc2);
+extern double Distance(QPoint& posSrc1, QPoint& posSrc2);
 extern double GetAngleToXAxis(QPointF& posSrc1, QPointF& posSrc2);
 extern void SetDrawEnvir(QPainter* pDC, int drawMode);
 extern void SetDrawEnvir(QPainter*	pDC, int drawMode, QPen* pPen);
@@ -566,4 +568,81 @@ public:
 	void LoadPmtCursor() {}
 	void Serialize(QDataStream& ar, bool bSave);
 };
+
+/////////////////////////////
+// CLASS MAnnotation
+//
+class MAnnotation : public MEntity
+{
+public:
+	// 标注类型
+	enum AnnotationType
+	{
+		atRoughness = 0,		// 表面粗糙度
+		atStandard = 1,			// 基准
+		atWelding = 2,			// 焊接
+	};
+	// 标注数据
+	struct AnnotationData
+	{
+		AnnotationType type;		// 标注类型
+		// 表面粗糙度
+		int roughnessMin = 0;		// 最小值
+		int roughnessMax = 0;		// 最大值
+		int obtainMethod = 0;		// 获得方法: 0-未注 1-去除材料 2-不去除材料
+		enum HeightType				// 高度类型
+		{
+			Ra = 0,
+			Rz = 1,
+			Ry = 2,
+		};
+		// 基准
+		QString standardName;	// 基准名称
+		// 焊接
+		QString weldingName;	// 焊接名称
+	};
+	AnnotationData m_annoData;
+
+protected:
+	//member variables
+	QPointF	m_begin;
+	QPointF	m_middle;
+	QPointF m_end;
+	
+public:
+	// constructor and destructor
+	MAnnotation();
+	MAnnotation(const MAnnotation& ann);
+	MAnnotation(const QPointF& startPos, const QPointF& middlePos, const QPointF& endPos, AnnotationData annoData);
+	~MAnnotation();
+
+	MEntity* Copy();
+
+	//-----------------------------------------------
+	// member function
+	// Attributes
+	int			GetType();
+	void		Init(); // initialize member variables
+	void    SetAttrib(QPen* pPen, QBrush* pBrush);
+	void	SetStartPos(const QPointF& pos) { m_begin = pos; }
+	void	SetMiddlePos(const QPointF& pos) { m_middle = pos; }
+	void	SetEndPos(const QPointF& pos) { m_end = pos; }
+	QPointF	GetStartPos();
+	QPointF	GetMiddlePos();
+	QPointF	GetEndPos();
+	bool	GetSnapPos(QPointF& pos);
+
+	void Draw(QCADView* pView, int drawMode = dmNormal);
+
+	////对直线的编辑操作：拾取，平移，旋转，镜向和获得最小包围盒
+	//bool Pick(const QPointF& pos, const double pick_radius);
+	//void Move(const QPointF& basePos, const QPointF& desPos, bool bTemp = false);
+	//void Rotate(const QPointF& basePos, const double angle);
+	//void Mirror(const QPointF& FstPos, const QPointF& SecPos);
+	//void GetBox(QRectF& pBox);
+
+	//void LoadPmtCursor() {}
+	//void Serialize(QDataStream& ar, bool bSave);
+};
+
 #endif

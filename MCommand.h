@@ -18,6 +18,7 @@ enum ECommandType	// 命令类
 	ctCreateEllipse = 5,    //创建椭圆
 	ctCreatePolygon = 6,    //多边形 
 	ctCreateText = 7,       //创建文本
+	ctCreateAnnotation = 8, //创建标注
 
 	//  修改命令类
 	ctMove = 11,			// 移动

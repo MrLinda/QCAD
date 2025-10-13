@@ -98,7 +98,9 @@
     <ClCompile Include="ELLIPSE.cpp" />
     <ClCompile Include="ENTITY.CPP" />
     <ClCompile Include="LINE.CPP" />
+    <ClCompile Include="MAnnotation.cpp" />
     <ClCompile Include="MCommand.cpp" />
+    <ClCompile Include="MCreateAnnotation.cpp" />
     <ClCompile Include="MCreateArc.cpp" />
     <ClCompile Include="MCreateCircle.cpp" />
     <ClCompile Include="MCreateEllipse.cpp" />
@@ -144,6 +146,7 @@
     <ClInclude Include="diagramitem.h" />
     <ClInclude Include="ENTITY.H" />
     <ClInclude Include="MCommand.h" />
+    <ClInclude Include="MCreateAnnotation.h" />
     <ClInclude Include="MCreateArc.h" />
     <ClInclude Include="MCreateCircle.h" />
     <ClInclude Include="MCreateEllipse.h" />
