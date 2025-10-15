@@ -10,6 +10,11 @@ MCreateAnnotation::MCreateAnnotation(QCADView* pDiagramScene, MAnnotation::Annot
 	m_nStep = 0; // 初始化操作步为 0
 	m_pDC = pDiagramScene;
 	m_annoData.type = annoType;
+	// Debug
+	m_annoData.obtainMethod = 2;
+	m_annoData.roughnessMin = "10";
+	m_annoData.roughnessMax = "50";
+	//
 	if (annoType == MAnnotation::atRoughness)
 	{
 		m_promptPrefix = QStringLiteral("请指定表面粗糙度标注的起点：");
@@ -49,13 +54,14 @@ int MCreateAnnotation::OnLButtonDown(QMouseEvent* mouseEvent)
 	{
 	case 1:
 		m_begin = m_pDC->ScreentoWorld(mouseEvent->pos());
-		m_middle = m_end = m_begin;
+		m_end = m_middle = m_begin;
 		m_pAnnotation = new MAnnotation(m_begin, m_middle, m_end, m_annoData);
 		m_pDC->addEntity(m_pAnnotation);
 		m_promptPrefix = QStringLiteral("请指定标注的中间点：");
 		break;
 	case 2:
 		m_middle = m_pDC->ScreentoWorld(mouseEvent->pos());
+		m_end = m_middle;
 		m_pAnnotation->SetMiddlePos(m_middle);
 		m_promptPrefix = QStringLiteral("请指定标注的终点：");
 		break;
@@ -92,11 +98,13 @@ int MCreateAnnotation::OnMouseMove(QMouseEvent* mouseEvent)
 	switch (m_nStep)
 	{
 	case 1:
-		m_middle = pos;
+		m_middle = m_pDC->ScreentoWorld(mouseEvent->pos());
+		m_end = m_middle;
 		m_pAnnotation->SetMiddlePos(m_middle);
+		m_pAnnotation->SetEndPos(m_end);
 		break;
 	case 2:
-		m_end = pos;
+		m_end = m_pDC->ScreentoWorld(mouseEvent->pos());
 		// end位置y值与middle位置y值相同
 		m_pAnnotation->SetEndPos(QPointF(m_end.x(), m_middle.y()));
 		break;

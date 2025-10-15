@@ -34,15 +34,25 @@ void MAnnotation::Init()
 	m_end = QPointF(0, 0);
 	m_middle = QPointF(0, 0);
 	m_annoData.type = atRoughness;
-	m_annoData.roughnessMin = 0;
-	m_annoData.roughnessMax = 0;
+	m_annoData.roughnessMin = "";
+	m_annoData.roughnessMax = "";
 	m_annoData.obtainMethod = 0;
 	m_annoData.standardName = "";
 	m_annoData.weldingName = "";
+	m_font = QFont("SimSun", 12);
 }
 
 MAnnotation::~MAnnotation()
 {
+	for (int i = 0; i < entities.size(); i++)
+	{
+		if (entities[i])
+		{
+			delete entities[i];
+			entities[i] = NULL;
+		}
+	}
+	entities.clear();
 }
 
 MEntity* MAnnotation::Copy()
@@ -86,12 +96,16 @@ void MAnnotation::Draw(QCADView* pView, int drawMode)
 	QPainter pDC(pView);
 	if(drawMode == dmNormal)
 	{
-		QVector<MEntity*> entities;
+		entities.clear();
 		if (m_annoData.type == atRoughness)
 		{
-			qDebug() << "进入粗糙度绘制分支";
-			qDebug() << "begin:" << m_begin << "middle:" << m_middle << "end:" << m_end;
-			qDebug() << "obtainMethod:" << m_annoData.obtainMethod;
+			//qDebug() << "进入粗糙度绘制分支";
+			//qDebug() << "begin:" << m_begin << "middle:" << m_middle << "end:" << m_end;
+			//qDebug() << "obtainMethod:" << m_annoData.obtainMethod;
+			qDebug() << "缩放因子：" << pView->GetScale();
+			QFont realFont = QFont(m_font.family(), m_font.pointSize() * pView->GetScale());
+			qDebug() << "字体高度：" << realFont.pointSize();
+			QFontMetrics metrics(realFont);
 
 			// 画表面粗糙度标注
 			QPoint pt_begin = pView->WorldtoScreen(m_begin);
@@ -105,6 +119,8 @@ void MAnnotation::Draw(QCADView* pView, int drawMode)
 			{
 				// 无引线
 				m_middle = m_begin;
+				// 固定不动
+				m_end = m_middle;
 				drawLeader = false;
 			}
 			else
@@ -128,36 +144,43 @@ void MAnnotation::Draw(QCADView* pView, int drawMode)
 				}
 				else
 				{
-					// 箭头
+					// 引线
 					entities.push_back(new MLine(m_begin, m_middle));
 				}
 			}
+
 			// 画水平线
 			if(drawLeader)
 			{
 				entities.push_back(new MLine(m_middle, m_end));
 			}
+
 			// 画粗糙度符号
-			qreal textHeight = 10;					// 字体高度
-			qreal signHeight = textHeight * 1.4;	// 符号高度
-			qreal signOffset = signHeight * 1.1;	// 符号偏移 
+			qreal scale = pView->GetScale();
+			qreal textHeight = metrics.height() / scale;	// 字体高度
+			qDebug() << "textHeight:" << textHeight;
+			qreal signHeight = textHeight * 1.4;						// 符号高度
+			qreal signOffset = signHeight * 1.1;						// 符号偏移 
 			QPointF signP1, signP2, signP3;
-			if (pt_end.x() > pt_middle.x())
+			if (pt_end.x() >= pt_middle.x())
 			{
 				// 右侧
 				signP1 = QPointF(m_middle.x() + signOffset - signHeight / tan(PI / 3), m_middle.y() + signHeight);
-				signP2 = QPointF(m_middle.x() + signOffset, m_end.y());
+				signP2 = QPointF(m_middle.x() + signOffset, m_middle.y());
 				signP3 = QPointF(m_middle.x() + signOffset + 2 * signHeight / tan(PI / 3), m_middle.y() + 2 * signHeight);
 			}
 			else
 			{
 				// 左侧
-				signP1 = QPointF(m_middle.x() - signOffset + signHeight / tan(PI / 3), m_middle.y() + signHeight);
-				signP2 = QPointF(m_middle.x() - signOffset, m_middle.y());
-				signP3 = QPointF(m_middle.x() - signOffset - 2 * signHeight / tan(PI / 3), m_middle.y() + 2 * signHeight);
+				signP1 = QPointF(m_end.x() + signOffset - signHeight / tan(PI / 3), m_end.y() + signHeight);
+				signP2 = QPointF(m_end.x() + signOffset, m_middle.y());
+				signP3 = QPointF(m_end.x() + signOffset + 2 * signHeight / tan(PI / 3), m_end.y() + 2 * signHeight);
 			}
 			entities.push_back(new MLine(signP1, signP2));
 			entities.push_back(new MLine(signP2, signP3));
+
+			qreal radius = signHeight / tan(PI / 3) / sin(PI / 3) * 2 / 3;
+			QPointF circleCenter = (2 * (signP1 + (signP2 + signP3) / 2) / 2 + signP2) / 3 + QPointF(0, radius * cos(PI / 3));
 			if (m_annoData.obtainMethod == 0)
 			{
 				// 未注
@@ -165,15 +188,72 @@ void MAnnotation::Draw(QCADView* pView, int drawMode)
 			else if (m_annoData.obtainMethod == 1)
 			{
 				// 去除材料
-				entities.push_back(new MLine(signP2, (signP2 + signP3) / 2));
+				entities.push_back(new MLine(signP1, (signP2 + signP3) / 2));
 			}
 			else if (m_annoData.obtainMethod == 2)
 			{
 				// 不去除材料
-				QPointF circleCenter = (signP1 + (signP2 + signP3) / 2) / 2 + QPointF(0, signHeight / tan(PI / 3) / tan(PI / 3));
-				qreal radius = signHeight / tan(PI / 3) / sin(PI / 3);
 				entities.push_back(new CCircle(circleCenter, radius));
 			}
+
+			// 画文字
+			QPointF textLowerRightBottom;
+			QPointF textUpperRightBottom;
+			if (m_annoData.obtainMethod == 0 || m_annoData.obtainMethod == 1)
+			{
+				// 未注或去除材料
+				textLowerRightBottom = (signP1 + 3 * (signP2 + signP3) / 2) / 4 + QPointF(signHeight / tan(PI/3), signHeight * 0.1);
+				textUpperRightBottom = textLowerRightBottom + QPointF(0, textHeight);
+			}
+			else if (m_annoData.obtainMethod == 2)
+			{
+				// 不去除材料
+				textLowerRightBottom = circleCenter + QPointF(signHeight / tan(PI / 3), radius + signHeight * 0.1);
+				textUpperRightBottom = textLowerRightBottom + QPointF(0, textHeight);
+			}
+			MText* pTextMin = new MText();
+			MText* pTextMax = new MText();
+			pTextMin->SetFont(realFont);
+			pTextMax->SetFont(realFont);
+			if(!m_annoData.roughnessMin.isEmpty() && !m_annoData.roughnessMax.isEmpty())
+			{
+				// 最小值和最大值都不为空
+				int textWidth = metrics.horizontalAdvance(m_annoData.roughnessMin) / scale;
+				pTextMin->SetText(m_annoData.roughnessMin);
+				pTextMin->SetRightBottomPos(textLowerRightBottom);
+				pTextMin->SetLeftTopPos(QPointF(textLowerRightBottom.x() - textWidth, textLowerRightBottom.y() + textHeight));
+				
+
+				textWidth = metrics.horizontalAdvance(m_annoData.roughnessMax) / scale;
+				pTextMax->SetText(m_annoData.roughnessMax);
+				pTextMax->SetRightBottomPos(textUpperRightBottom);
+				pTextMax->SetLeftTopPos(QPointF(textUpperRightBottom.x() - textWidth, textUpperRightBottom.y() + textHeight));
+
+				entities.push_back(pTextMin);
+				entities.push_back(pTextMax);
+			}
+			else if (!m_annoData.roughnessMin.isEmpty())
+			{
+				// 只有最小值不为空
+				int textWidth = metrics.horizontalAdvance(m_annoData.roughnessMin) / scale;
+				pTextMin->SetText(m_annoData.roughnessMin);
+				pTextMin->SetRightBottomPos(textLowerRightBottom);
+				pTextMin->SetLeftTopPos(QPointF(textLowerRightBottom.x() - textWidth, textLowerRightBottom.y() + textHeight));
+
+				entities.push_back(pTextMin);
+			}
+			else if (!m_annoData.roughnessMax.isEmpty())
+			{
+				// 只有最大值不为空
+				int textWidth = metrics.horizontalAdvance(m_annoData.roughnessMax) / scale;
+				pTextMax->SetText(m_annoData.roughnessMax);
+				pTextMax->SetRightBottomPos(textUpperRightBottom);
+				pTextMax->SetLeftTopPos(QPointF(textUpperRightBottom.x() - textWidth, textUpperRightBottom.y() + textHeight));
+
+				entities.push_back(pTextMax);
+			}
+			qDebug() << "begin:" << m_begin << "middle:" << m_middle << "end:" << m_end;
+			qDebug() << "signP2:" << signP2;
 		}
 		else if (m_annoData.type == atStandard)
 		{
@@ -186,7 +266,22 @@ void MAnnotation::Draw(QCADView* pView, int drawMode)
 		foreach (MEntity* entity, entities) {
 			entity->SetAttrib(&m_pen, &m_brush);
 			entity->Draw(pView, drawMode);
-			delete entity; // 用完及时释放
 		}
 	}
+	else if (drawMode == dmSelect)
+	{
+		foreach (MEntity* entity, entities) {
+		entity->Draw(pView, drawMode);
+		}
+	}
+}
+
+bool MAnnotation::Pick(const QPointF& pos, const double pick_radius)
+{
+	foreach (MEntity* entity, entities) {
+		if (entity->Pick(pos, pick_radius)) {
+			return true;
+		}
+	}
+	return false;
 }

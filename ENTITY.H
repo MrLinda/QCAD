@@ -419,6 +419,7 @@ public:
 	QPointF	GetRightBottomPos();	// 返回右下角的值
 	QString		GetText();
 	void		SetText(const char * text);
+	void 		SetText(const QString& text);
 	void		SetFont(QFont font);
 	QColor		GetTextColor();
 	void		SetTextColor(QColor color);
@@ -587,15 +588,15 @@ public:
 	{
 		AnnotationType type;		// 标注类型
 		// 表面粗糙度
-		int roughnessMin = 0;		// 最小值
-		int roughnessMax = 0;		// 最大值
+		QString roughnessMin = "";		// 最小值
+		QString roughnessMax = "";		// 最大值
 		int obtainMethod = 0;		// 获得方法: 0-未注 1-去除材料 2-不去除材料
-		enum HeightType				// 高度类型
-		{
-			Ra = 0,
-			Rz = 1,
-			Ry = 2,
-		};
+		//enum HeightType				// 高度类型
+		//{
+		//	Ra = 0,
+		//	Rz = 1,
+		//	Ry = 2,
+		//};
 		// 基准
 		QString standardName;	// 基准名称
 		// 焊接
@@ -608,6 +609,8 @@ protected:
 	QPointF	m_begin;
 	QPointF	m_middle;
 	QPointF m_end;
+	QVector<MEntity*> entities; // 标注由多个图元组成
+	QFont m_font; // 标注字体
 	
 public:
 	// constructor and destructor
@@ -621,21 +624,25 @@ public:
 	//-----------------------------------------------
 	// member function
 	// Attributes
-	int			GetType();
-	void		Init(); // initialize member variables
-	void    SetAttrib(QPen* pPen, QBrush* pBrush);
-	void	SetStartPos(const QPointF& pos) { m_begin = pos; }
-	void	SetMiddlePos(const QPointF& pos) { m_middle = pos; }
-	void	SetEndPos(const QPointF& pos) { m_end = pos; }
-	QPointF	GetStartPos();
-	QPointF	GetMiddlePos();
-	QPointF	GetEndPos();
-	bool	GetSnapPos(QPointF& pos);
+	int				GetType();
+	void			Init(); // initialize member variables
+	void			SetAttrib(QPen* pPen, QBrush* pBrush);
+	void			SetStartPos(const QPointF& pos) { m_begin = pos; }
+	void			SetMiddlePos(const QPointF& pos) { m_middle = pos; }
+	void			SetEndPos(const QPointF& pos) { m_end = pos; }
+	void			SetAnnotationData(AnnotationData annoData) { m_annoData = annoData; }
+	void			SetFont(QFont font) { m_font = font; }
+	AnnotationData	GetAnnotationData() const { return m_annoData; }
+	QPointF			GetStartPos();
+	QPointF			GetMiddlePos();
+	QPointF			GetEndPos();
+	QFont			GetFont() const { return m_font; }
+	bool			GetSnapPos(QPointF& pos);
 
 	void Draw(QCADView* pView, int drawMode = dmNormal);
 
-	////对直线的编辑操作：拾取，平移，旋转，镜向和获得最小包围盒
-	//bool Pick(const QPointF& pos, const double pick_radius);
+	//对直线的编辑操作：拾取，平移，旋转，镜向和获得最小包围盒
+	bool Pick(const QPointF& pos, const double pick_radius);
 	//void Move(const QPointF& basePos, const QPointF& desPos, bool bTemp = false);
 	//void Rotate(const QPointF& basePos, const double angle);
 	//void Mirror(const QPointF& FstPos, const QPointF& SecPos);

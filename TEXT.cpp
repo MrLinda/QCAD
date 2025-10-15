@@ -97,6 +97,11 @@ void MText::SetText(const char* text)
 	m_Text = text;
 }
 
+void MText::SetText(const QString& text)
+{
+	m_Text = text;
+}
+
 void MText::SetFont(QFont font)
 {
 	m_Font = font;
