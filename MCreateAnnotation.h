@@ -18,7 +18,7 @@ private:
 	MAnnotation::AnnotationData m_annoData;
 	MAnnotation::AnnotationType m_createAnnoType;
 public:
-	MCreateAnnotation(QCADView* pDiagramScene, MAnnotation::AnnotationType annoType);
+	MCreateAnnotation(QCADView* pDiagramScene, MAnnotation::AnnotationType annoType, MAnnotation::WeldingType Weldingtype);
 	~MCreateAnnotation();
 	int		GetType();
 	int		OnLButtonDown(QMouseEvent* mouseEvent);

@@ -19,6 +19,14 @@ enum ECommandType	// 命令类
 	ctCreatePolygon = 6,    //多边形 
 	ctCreateText = 7,       //创建文本
 	ctCreateAnnotation = 8, //创建标注
+	ctCreateFilletWeld = 30,
+	ctCreateIWeld = 31,
+	ctCreateVWeld = 32,
+	ctCreatePlugWeld = 33,
+	ctCreatespotWeld = 34,
+	ctCreateStandardA = 35, // 基准标注命令类型
+	ctCreateStandardB = 36,
+	ctCreateStandardC = 37,
 
 	//  修改命令类
 	ctMove = 11,			// 移动

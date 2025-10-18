@@ -241,12 +241,13 @@ void MEntity::Serialize(QDataStream& ar, bool bSave)
 	if (bSave)
 		ar << m_pen.color() << m_pen.style() << m_pen.width();
 	else
+	{
 		ar >> color >> intStyle >> lineWidth;
-
-	lineStyle = (Qt::PenStyle)intStyle;
-	m_pen = QPen(color);
-	m_pen.setWidth(lineWidth);
-	m_pen.setStyle(lineStyle);
+		lineStyle = (Qt::PenStyle)intStyle;
+		m_pen = QPen(color);
+		m_pen.setWidth(lineWidth);
+		m_pen.setStyle(lineStyle);
+	}
 }
 
 void MEntity::Append(MEntity* pEnt)

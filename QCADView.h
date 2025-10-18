@@ -11,6 +11,7 @@ class QCADView :
 private:
     QList<MEntity*> m_EntityList;
     QList<MEntity*> m_SelectEntityList;
+    QList<MEntity*> m_removeEntityList;
     MCommand* m_pCmd;
 
 public:
@@ -28,6 +29,7 @@ protected:
 public:
     void addEntity(MEntity* pEnt);
     void removeEntity(MEntity* pEnt);
+    void remove();
     void selectEntity();
     void RemoveSelection(MEntity* pEnt);
     void removeLastEntity();
@@ -40,6 +42,15 @@ public:
     void drawEllipse();
     void drawText();
 	void drawAnnotation();
+
+    void filletWeld();
+    void IWeld();
+    void VWeld();
+    void PlugWeld();
+    void spotWeld();
+    void standardA(); // 基准标注功能
+    void standardB();
+    void standardC();
 
 private:
     QColor m_lineColor;
@@ -68,6 +79,7 @@ public:
 
 public:
     void AddSelection(MEntity* pEnt);
+    void Addremove(MEntity* pEnt);
     void ClearSelections() { m_SelectEntityList.clear(); }
     QList<MEntity*> GetEntityList() const { return m_EntityList; }
     QList<MEntity*> GetSelectedEntityList() const { return m_SelectEntityList; }
@@ -85,5 +97,8 @@ public:
     QPoint WorldtoScreen(QPointF pos);
     QPointF ScreentoWorld(QPoint pos);
     QPointF ScreentoWorld(QPointF pos);
+
+    void Save(QDataStream& out);
+    void Read(QDataStream& in);
 };
 

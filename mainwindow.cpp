@@ -19,7 +19,7 @@ const int InsertTextButton = 10;
 //MainWindow* g_p
 void Prompt(QString sInfo)
 {
-    MainWindow* pMain = g_pMainWnd; 
+    MainWindow* pMain = g_pMainWnd;
     pMain->statusBar()->showMessage(sInfo);
 }
 
@@ -29,7 +29,7 @@ MainWindow::MainWindow()
     createActions();
     createToolBox();
     createMenus();
-    
+
 #ifdef QT_PAINTER
     //QCAD-QPainter版本
     scene = NULL;
@@ -46,13 +46,13 @@ MainWindow::MainWindow()
     view = new QGraphicsView(scene);
 #endif // QT_PAINTER
 
-     /*scene->setSceneRect(QRectF(0, 0, 1000, 800));
-    connect(scene, SIGNAL(itemInserted(DiagramItem*)),
-            this, SLOT(itemInserted(DiagramItem*)));
-    connect(scene, SIGNAL(textInserted(QGraphicsTextItem*)),
-            this, SLOT(textInserted(QGraphicsTextItem*)));
-    connect(scene, SIGNAL(itemSelected(QGraphicsItem*)),
-            this, SLOT(itemSelected(QGraphicsItem*)));*/
+    /*scene->setSceneRect(QRectF(0, 0, 1000, 800));
+   connect(scene, SIGNAL(itemInserted(DiagramItem*)),
+           this, SLOT(itemInserted(DiagramItem*)));
+   connect(scene, SIGNAL(textInserted(QGraphicsTextItem*)),
+           this, SLOT(textInserted(QGraphicsTextItem*)));
+   connect(scene, SIGNAL(itemSelected(QGraphicsItem*)),
+           this, SLOT(itemSelected(QGraphicsItem*)));*/
     createToolbars();
 
     //// 初始化状态栏
@@ -66,11 +66,11 @@ MainWindow::MainWindow()
     view->setMouseTracking(true);
     //view->fitInView(0, 0, 800, 600);
 
-    QHBoxLayout *layout = new QHBoxLayout;
+    QHBoxLayout* layout = new QHBoxLayout;
     //layout->addWidget(toolBox);
     layout->addWidget(view);
 
-    QWidget *widget = new QWidget;
+    QWidget* widget = new QWidget;
     widget->setLayout(layout);
 
     setCentralWidget(widget);
@@ -83,10 +83,10 @@ MainWindow::MainWindow()
 //! [0]
 
 //! [1]
-void MainWindow::backgroundButtonGroupClicked(QAbstractButton *button)
+void MainWindow::backgroundButtonGroupClicked(QAbstractButton* button)
 {
-    QList<QAbstractButton *> buttons = backgroundButtonGroup->buttons();
-    foreach (QAbstractButton *myButton, buttons) {
+    QList<QAbstractButton*> buttons = backgroundButtonGroup->buttons();
+    foreach(QAbstractButton * myButton, buttons) {
         if (myButton != button)
             button->setChecked(false);
     }
@@ -108,14 +108,15 @@ void MainWindow::backgroundButtonGroupClicked(QAbstractButton *button)
 //! [2]
 void MainWindow::buttonGroupClicked(int id)
 {
-    QList<QAbstractButton *> buttons = buttonGroup->buttons();
-    foreach (QAbstractButton *button, buttons) {
+    QList<QAbstractButton*> buttons = buttonGroup->buttons();
+    foreach(QAbstractButton * button, buttons) {
         if (buttonGroup->button(id) != button)
             button->setChecked(false);
     }
     if (id == InsertTextButton) {
         scene->setMode(DiagramScene::InsertText);
-    } else {
+    }
+    else {
         scene->setItemType(DiagramItem::DiagramType(id));
         scene->setMode(DiagramScene::InsertItem);
     }
@@ -127,12 +128,12 @@ void MainWindow::deleteItem()
 {
 #ifdef QT_PAINTER
     //QCAD-QPainter版本
-	QList<MEntity*> delList = view->GetSelectedEntityList();
-    foreach(MEntity* pEnt, delList) {
+    QList<MEntity*> delList = view->GetSelectedEntityList();
+    foreach(MEntity * pEnt, delList) {
         view->removeEntity(pEnt);
         delete pEnt;
-	}
-	view->update();
+    }
+    view->update();
 
 #elif
     foreach(QGraphicsItem * item, scene->selectedItems()) {
@@ -168,11 +169,11 @@ void MainWindow::bringToFront()
     if (scene->selectedItems().isEmpty())
         return;
 
-    QGraphicsItem *selectedItem = scene->selectedItems().first();
-    QList<QGraphicsItem *> overlapItems = selectedItem->collidingItems();
+    QGraphicsItem* selectedItem = scene->selectedItems().first();
+    QList<QGraphicsItem*> overlapItems = selectedItem->collidingItems();
 
     qreal zValue = 0;
-    foreach (QGraphicsItem *item, overlapItems) {
+    foreach(QGraphicsItem * item, overlapItems) {
         if (item->zValue() >= zValue && item->type() == DiagramItem::Type)
             zValue = item->zValue() + 0.1;
     }
@@ -186,11 +187,11 @@ void MainWindow::sendToBack()
     if (scene->selectedItems().isEmpty())
         return;
 
-    QGraphicsItem *selectedItem = scene->selectedItems().first();
-    QList<QGraphicsItem *> overlapItems = selectedItem->collidingItems();
+    QGraphicsItem* selectedItem = scene->selectedItems().first();
+    QList<QGraphicsItem*> overlapItems = selectedItem->collidingItems();
 
     qreal zValue = 0;
-    foreach (QGraphicsItem *item, overlapItems) {
+    foreach(QGraphicsItem * item, overlapItems) {
         if (item->zValue() <= zValue && item->type() == DiagramItem::Type)
             zValue = item->zValue() - 0.1;
     }
@@ -199,7 +200,7 @@ void MainWindow::sendToBack()
 //! [6]
 
 //! [7]
-void MainWindow::itemInserted(DiagramItem *item)
+void MainWindow::itemInserted(DiagramItem* item)
 {
     pointerTypeGroup->button(int(DiagramScene::MoveItem))->setChecked(true);
     scene->setMode(DiagramScene::Mode(pointerTypeGroup->checkedId()));
@@ -208,7 +209,7 @@ void MainWindow::itemInserted(DiagramItem *item)
 //! [7]
 
 //! [8]
-void MainWindow::textInserted(QGraphicsTextItem *)
+void MainWindow::textInserted(QGraphicsTextItem*)
 {
     buttonGroup->button(InsertTextButton)->setChecked(false);
     scene->setMode(DiagramScene::Mode(pointerTypeGroup->checkedId()));
@@ -216,21 +217,21 @@ void MainWindow::textInserted(QGraphicsTextItem *)
 //! [8]
 
 //! [9]
-void MainWindow::currentFontChanged(const QFont &)
+void MainWindow::currentFontChanged(const QFont&)
 {
     handleFontChange();
 }
 //! [9]
 
 //! [10]
-void MainWindow::fontSizeChanged(const QString &)
+void MainWindow::fontSizeChanged(const QString&)
 {
     handleFontChange();
 }
 //! [10]
 
 //! [11]
-void MainWindow::sceneScaleChanged(const QString &scale)
+void MainWindow::sceneScaleChanged(const QString& scale)
 {
     double newScale = scale.left(scale.indexOf(tr("%"))).toDouble() / 100.0;
     //QMatrix oldMatrix = view->matrix();
@@ -243,10 +244,10 @@ void MainWindow::sceneScaleChanged(const QString &scale)
 //! [12]
 void MainWindow::textColorChanged()
 {
-    textAction = qobject_cast<QAction *>(sender());
+    textAction = qobject_cast<QAction*>(sender());
     fontColorToolButton->setIcon(createColorToolButtonIcon(
-                                     "images/textpointer.png",
-                                     qvariant_cast<QColor>(textAction->data())));
+        "images/textpointer.png",
+        qvariant_cast<QColor>(textAction->data())));
     textButtonTriggered();
 }
 //! [12]
@@ -254,10 +255,10 @@ void MainWindow::textColorChanged()
 //! [13]
 void MainWindow::itemColorChanged()
 {
-    fillAction = qobject_cast<QAction *>(sender());
+    fillAction = qobject_cast<QAction*>(sender());
     fillColorToolButton->setIcon(createColorToolButtonIcon(
-                                     "images/floodfill.png",
-                                     qvariant_cast<QColor>(fillAction->data())));
+        "images/floodfill.png",
+        qvariant_cast<QColor>(fillAction->data())));
     fillButtonTriggered();
 }
 //! [13]
@@ -265,10 +266,10 @@ void MainWindow::itemColorChanged()
 //! [14]
 void MainWindow::lineColorChanged()
 {
-    lineAction = qobject_cast<QAction *>(sender());
+    lineAction = qobject_cast<QAction*>(sender());
     lineColorToolButton->setIcon(createColorToolButtonIcon(
-                                     "images/linecolor.png",
-                                     qvariant_cast<QColor>(lineAction->data())));
+        "images/linecolor.png",
+        qvariant_cast<QColor>(lineAction->data())));
     lineButtonTriggered();
 }
 //! [14]
@@ -294,7 +295,7 @@ void MainWindow::fillButtonTriggered()
 #else
     scene->setItemColor(qvariant_cast<QColor>(fillAction->data()));
 #endif // QT_PAINTER
- }
+}
 //! [16]
 
 //! [17]
@@ -315,7 +316,7 @@ void MainWindow::lineTypeChanged(QString sType)
     {
         pStyle = Qt::PenStyle::SolidLine;
     }
-    else if(sType == QStringLiteral("虚线"))
+    else if (sType == QStringLiteral("虚线"))
     {
         pStyle = Qt::PenStyle::DashLine;
     }
@@ -379,10 +380,10 @@ void MainWindow::handleFontChange()
 //! [18]
 
 //! [19]
-void MainWindow::itemSelected(QGraphicsItem *item)
+void MainWindow::itemSelected(QGraphicsItem* item)
 {
-    DiagramTextItem *textItem =
-    qgraphicsitem_cast<DiagramTextItem *>(item);
+    DiagramTextItem* textItem =
+        qgraphicsitem_cast<DiagramTextItem*>(item);
 
     QFont font = textItem->font();
     fontCombo->setCurrentFont(font);
@@ -397,8 +398,8 @@ void MainWindow::itemSelected(QGraphicsItem *item)
 void MainWindow::about()
 {
     QMessageBox::about(this, QStringLiteral("关于QCAD"),
-                       QStringLiteral("小型二维图形系统--"
-                          "华中科技大学CAD中心"));
+        QStringLiteral("小型二维图形系统--"
+            "华中科技大学CAD中心"));
 }
 //! [20]
 
@@ -408,53 +409,53 @@ void MainWindow::createToolBox()
     buttonGroup = new QButtonGroup(this);
     buttonGroup->setExclusive(false);
     connect(buttonGroup, SIGNAL(buttonClicked(int)),
-            this, SLOT(buttonGroupClicked(int)));
-    QGridLayout *layout = new QGridLayout;
+        this, SLOT(buttonGroupClicked(int)));
+    QGridLayout* layout = new QGridLayout;
     layout->addWidget(createCellWidget(tr("Conditional"), DiagramItem::Conditional), 0, 0);
-    layout->addWidget(createCellWidget(tr("Process"), DiagramItem::Step),0, 1);
+    layout->addWidget(createCellWidget(tr("Process"), DiagramItem::Step), 0, 1);
     layout->addWidget(createCellWidget(tr("Input/Output"), DiagramItem::Io), 1, 0);
-//! [21]
+    //! [21]
 
-    QToolButton *textButton = new QToolButton;
+    QToolButton* textButton = new QToolButton;
     textButton->setCheckable(true);
     buttonGroup->addButton(textButton, InsertTextButton);
     textButton->setIcon(QIcon(QPixmap("images/textpointer.png")));
     textButton->setIconSize(QSize(50, 50));
-    QGridLayout *textLayout = new QGridLayout;
+    QGridLayout* textLayout = new QGridLayout;
     textLayout->addWidget(textButton, 0, 0, Qt::AlignHCenter);
     textLayout->addWidget(new QLabel(tr("Text")), 1, 0, Qt::AlignCenter);
-    QWidget *textWidget = new QWidget;
+    QWidget* textWidget = new QWidget;
     textWidget->setLayout(textLayout);
     layout->addWidget(textWidget, 1, 1);
 
     layout->setRowStretch(3, 10);
     layout->setColumnStretch(2, 10);
 
-    QWidget *itemWidget = new QWidget;
+    QWidget* itemWidget = new QWidget;
     itemWidget->setLayout(layout);
 
     backgroundButtonGroup = new QButtonGroup(this);
     connect(backgroundButtonGroup, SIGNAL(buttonClicked(QAbstractButton*)),
-            this, SLOT(backgroundButtonGroupClicked(QAbstractButton*)));
+        this, SLOT(backgroundButtonGroupClicked(QAbstractButton*)));
 
-    QGridLayout *backgroundLayout = new QGridLayout;
+    QGridLayout* backgroundLayout = new QGridLayout;
     backgroundLayout->addWidget(createBackgroundCellWidget(tr("Blue Grid"),
-                                                           "images/background1.png"), 0, 0);
+        "images/background1.png"), 0, 0);
     backgroundLayout->addWidget(createBackgroundCellWidget(tr("White Grid"),
-                                                           "images/background2.png"), 0, 1);
+        "images/background2.png"), 0, 1);
     backgroundLayout->addWidget(createBackgroundCellWidget(tr("Gray Grid"),
-                                                           "images/background3.png"), 1, 0);
+        "images/background3.png"), 1, 0);
     backgroundLayout->addWidget(createBackgroundCellWidget(tr("No Grid"),
-                                                           "images/background4.png"), 1, 1);
+        "images/background4.png"), 1, 1);
 
     backgroundLayout->setRowStretch(2, 10);
     backgroundLayout->setColumnStretch(2, 10);
 
-    QWidget *backgroundWidget = new QWidget;
+    QWidget* backgroundWidget = new QWidget;
     backgroundWidget->setLayout(backgroundLayout);
 
 
-//! [22]
+    //! [22]
     toolBox = new QToolBox;
     toolBox->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Ignored));
     toolBox->setMinimumWidth(itemWidget->sizeHint().width());
@@ -501,7 +502,7 @@ void MainWindow::createActions()
     drawLineAction->setShortcut(tr("Ctrl+L"));
     drawLineAction->setStatusTip(QStringLiteral("直线"));
     connect(drawLineAction, SIGNAL(triggered()), this, SLOT(drawLine()));
-    
+
     drawCircleAction = new QAction(QIcon("images/drawCircle.png"),
         QStringLiteral("圆"), this);
     //drawCircleAction->setShortcut(tr("Ctrl+L"));
@@ -534,9 +535,45 @@ void MainWindow::createActions()
     connect(drawTextAction, SIGNAL(triggered()), this, SLOT(drawText()));
 
     drawAnnotationAction = new QAction(QIcon("images/drawAnnotation.png"),
-		QStringLiteral("符号标注"), this);
-	drawAnnotationAction->setStatusTip(QStringLiteral("符号标注"));
-	connect(drawAnnotationAction, SIGNAL(triggered()), this, SLOT(drawAnnotation()));
+        QStringLiteral("符号标注"), this);
+    drawAnnotationAction->setStatusTip(QStringLiteral("符号标注"));
+    connect(drawAnnotationAction, SIGNAL(triggered()), this, SLOT(drawAnnotation()));
+
+    FilletweldAction = new QAction(QIcon("images/filletWeld.png"), QStringLiteral("角焊符号"), this);
+    FilletweldAction->setStatusTip(QStringLiteral("角焊符号"));
+    connect(FilletweldAction, SIGNAL(triggered()), this, SLOT(filletWeld()));
+
+    IweldAction = new QAction(QIcon("images/IWeld.png"), QStringLiteral("I型焊缝符号"), this);
+    IweldAction->setStatusTip(QStringLiteral("I型焊缝符号"));
+    connect(IweldAction, SIGNAL(triggered()), this, SLOT(IWeld()));
+
+    VweldAction = new QAction(QIcon("images/VWeld.png"), QStringLiteral("V型焊缝符号"), this);
+    VweldAction->setStatusTip(QStringLiteral("V型焊缝符号"));
+    connect(VweldAction, SIGNAL(triggered()), this, SLOT(VWeld()));
+
+    PlugweldAction = new QAction(QIcon("images/PlugWeld.png"), QStringLiteral("塞焊缝符号"), this);
+    PlugweldAction->setStatusTip(QStringLiteral("塞焊缝符号"));
+    connect(PlugweldAction, SIGNAL(triggered()), this, SLOT(PlugWeld()));
+
+    spotweldAction = new QAction(QIcon("images/spotWeld.png"), QStringLiteral("点焊缝符号"), this);
+    spotweldAction->setStatusTip(QStringLiteral("点焊缝符号"));
+    connect(spotweldAction, SIGNAL(triggered()), this, SLOT(spotWeld()));
+
+    spotweldAction = new QAction(QIcon("images/spotWeld.png"), QStringLiteral("点焊缝"), this);
+    spotweldAction->setStatusTip(QStringLiteral("点焊缝"));
+    connect(spotweldAction, SIGNAL(triggered()), this, SLOT(spotWeld()));
+
+    standardAnnotationAction = new QAction(QIcon("images/standardA.png"), QStringLiteral("基准标注A"), this);
+    standardAnnotationAction->setStatusTip(QStringLiteral("基准标注A"));
+    connect(standardAnnotationAction, SIGNAL(triggered()), this, SLOT(standardAnnotation()));
+
+    standardAnnotationBAction = new QAction(QIcon("images/standardB.png"), QStringLiteral("基准标注B"), this);
+    standardAnnotationBAction->setStatusTip(QStringLiteral("基准标注B"));
+    connect(standardAnnotationBAction, SIGNAL(triggered()), this, SLOT(standardAnnotationB()));
+
+    standardAnnotationCAction = new QAction(QIcon("images/standardC.png"), QStringLiteral("基准标注C"), this);
+    standardAnnotationCAction->setStatusTip(QStringLiteral("基准标注C"));
+    connect(standardAnnotationCAction, SIGNAL(triggered()), this, SLOT(standardAnnotationC()));
     /// <summary>
     /// Modify Actions
     /// </summary>
@@ -604,13 +641,13 @@ void MainWindow::createActions()
     /// <summary>
     /// AttribActions
     /// </summary>
-    
+
     toFrontAction = new QAction(QIcon("images/bringtofront.png"),
-                                tr("Bring to &Front"), this);
+        tr("Bring to &Front"), this);
     toFrontAction->setShortcut(tr("Ctrl+F"));
     toFrontAction->setStatusTip(tr("Bring item to front"));
     connect(toFrontAction, SIGNAL(triggered()), this, SLOT(bringToFront()));
-//! [23]
+    //! [23]
 
     sendBackAction = new QAction(QIcon("images/sendtoback.png"), tr("Send to &Back"), this);
     sendBackAction->setShortcut(tr("Ctrl+T"));
@@ -663,6 +700,8 @@ void MainWindow::createMenus()
 
     aboutMenu = menuBar()->addMenu(tr("&Help"));
     aboutMenu->addAction(aboutAction);
+
+
 }
 //! [24]
 
@@ -687,8 +726,6 @@ void MainWindow::createToolbars()
     drawToolBar->addAction(drawEllipseAction);
     drawToolBar->addAction(drawPolygonAction);
     drawToolBar->addAction(drawTextAction);
-	drawToolBar->addAction(drawAnnotationAction);
-
     // 3.修改：选择，刷新，平移，对称，旋转，删除
     modifyToolBar = addToolBar(tr("modify"));
     modifyToolBar->addAction(selectEntityAction);
@@ -706,14 +743,24 @@ void MainWindow::createToolbars()
     zoomToolBar->addAction(zoomWindowAction);
     zoomToolBar->addAction(zoomPanAction);
 
+    annotationToolbar = addToolBar(tr("annotation"));
+    annotationToolbar->addAction(drawAnnotationAction);
+    annotationToolbar->addAction(FilletweldAction);
+    annotationToolbar->addAction(IweldAction);
+    annotationToolbar->addAction(VweldAction);
+    annotationToolbar->addAction(PlugweldAction);
+    annotationToolbar->addAction(spotweldAction);
+    annotationToolbar->addAction(standardAnnotationAction);
+    annotationToolbar->addAction(standardAnnotationBAction);
+    annotationToolbar->addAction(standardAnnotationCAction);
     // 5.属性：线型，颜色，宽度
     //线型：实线、虚线、点划线
     lineTypeCombo = new QComboBox;
     QStringList lineTypes;
-    lineTypes << QStringLiteral("实线") << QStringLiteral("虚线") << QStringLiteral("点划线") ;
+    lineTypes << QStringLiteral("实线") << QStringLiteral("虚线") << QStringLiteral("点划线");
     lineTypeCombo->addItems(lineTypes);
     lineTypeCombo->setCurrentIndex(0);
-    connect(lineTypeCombo, SIGNAL(currentIndexChanged(QString)),this, SLOT(lineTypeChanged(QString)));
+    connect(lineTypeCombo, SIGNAL(currentIndexChanged(QString)), this, SLOT(lineTypeChanged(QString)));
 
 
     //颜色，线条颜色
@@ -722,7 +769,7 @@ void MainWindow::createToolbars()
     lineColorToolButton->setMenu(createColorMenu(SLOT(lineColorChanged()), Qt::black));
     lineAction = lineColorToolButton->menu()->defaultAction();
     lineColorToolButton->setIcon(createColorToolButtonIcon("images/linecolor.png", Qt::black));
-    connect(lineColorToolButton, SIGNAL(clicked()),this, SLOT(lineButtonTriggered()));
+    connect(lineColorToolButton, SIGNAL(clicked()), this, SLOT(lineButtonTriggered()));
 
     //线宽：1~4种吧
     lineWidCombo = new QComboBox;
@@ -730,7 +777,7 @@ void MainWindow::createToolbars()
     lineWidths << QStringLiteral("宽度1") << QStringLiteral("宽度2") << QStringLiteral("宽度3") << QStringLiteral("宽度4");
     lineWidCombo->addItems(lineWidths);
     lineWidCombo->setCurrentIndex(0);
-    connect(lineWidCombo, SIGNAL(currentIndexChanged(QString)),this, SLOT(lineWidChanged(QString)));
+    connect(lineWidCombo, SIGNAL(currentIndexChanged(QString)), this, SLOT(lineWidChanged(QString)));
 
     //! [26]
     fillColorToolButton = new QToolButton;
@@ -746,26 +793,26 @@ void MainWindow::createToolbars()
     attribToolbar->addWidget(lineWidCombo);
     attribToolbar->addWidget(lineColorToolButton);
     attribToolbar->addWidget(fillColorToolButton);
-//! [25]
+    //! [25]
 
 
-    //editToolBar = addToolBar(tr("Edit"));
-    //editToolBar->addAction(deleteAction);
-    //editToolBar->addAction(toFrontAction);
-    //editToolBar->addAction(sendBackAction);
+        //editToolBar = addToolBar(tr("Edit"));
+        //editToolBar->addAction(deleteAction);
+        //editToolBar->addAction(toFrontAction);
+        //editToolBar->addAction(sendBackAction);
 
     fontCombo = new QFontComboBox();
     connect(fontCombo, SIGNAL(currentFontChanged(QFont)),
-            this, SLOT(currentFontChanged(QFont)));
+        this, SLOT(currentFontChanged(QFont)));
 
     fontSizeCombo = new QComboBox;
     fontSizeCombo->setEditable(true);
     for (int i = 8; i < 30; i = i + 2)
         fontSizeCombo->addItem(QString().setNum(i));
-    QIntValidator *validator = new QIntValidator(2, 64, this);
+    QIntValidator* validator = new QIntValidator(2, 64, this);
     fontSizeCombo->setValidator(validator);
     connect(fontSizeCombo, SIGNAL(currentIndexChanged(QString)),
-            this, SLOT(fontSizeChanged(QString)));
+        this, SLOT(fontSizeChanged(QString)));
 
     fontColorToolButton = new QToolButton;
     fontColorToolButton->setPopupMode(QToolButton::MenuButtonPopup);
@@ -774,7 +821,7 @@ void MainWindow::createToolbars()
     fontColorToolButton->setIcon(createColorToolButtonIcon("images/textpointer.png", Qt::black));
     fontColorToolButton->setAutoFillBackground(true);
     connect(fontColorToolButton, SIGNAL(clicked()),
-            this, SLOT(textButtonTriggered()));
+        this, SLOT(textButtonTriggered()));
 
 
 
@@ -791,11 +838,11 @@ void MainWindow::createToolbars()
     //colorToolBar->addWidget(fillColorToolButton);
     //colorToolBar->addWidget(lineColorToolButton);
 
-    QToolButton *pointerButton = new QToolButton;
+    QToolButton* pointerButton = new QToolButton;
     pointerButton->setCheckable(true);
     pointerButton->setChecked(true);
     pointerButton->setIcon(QIcon("images/pointer.png"));
-    QToolButton *linePointerButton = new QToolButton;
+    QToolButton* linePointerButton = new QToolButton;
     linePointerButton->setCheckable(true);
     linePointerButton->setIcon(QIcon("images/linepointer.png"));
 
@@ -803,7 +850,7 @@ void MainWindow::createToolbars()
     pointerTypeGroup->addButton(pointerButton, int(DiagramScene::MoveItem));
     pointerTypeGroup->addButton(linePointerButton, int(DiagramScene::InsertLine));
     connect(pointerTypeGroup, SIGNAL(buttonClicked(int)),
-            this, SLOT(pointerGroupClicked(int)));
+        this, SLOT(pointerGroupClicked(int)));
 
     sceneScaleCombo = new QComboBox;
     QStringList scales;
@@ -811,7 +858,7 @@ void MainWindow::createToolbars()
     sceneScaleCombo->addItems(scales);
     sceneScaleCombo->setCurrentIndex(2);
     connect(sceneScaleCombo, SIGNAL(currentIndexChanged(QString)),
-            this, SLOT(sceneScaleChanged(QString)));
+        this, SLOT(sceneScaleChanged(QString)));
 
     pointerToolbar = addToolBar(tr("Pointer type"));
     //pointerToolbar->addWidget(pointerButton);
@@ -821,20 +868,20 @@ void MainWindow::createToolbars()
 //! [27]
 
 //! [28]
-QWidget *MainWindow::createBackgroundCellWidget(const QString &text, const QString &image)
+QWidget* MainWindow::createBackgroundCellWidget(const QString& text, const QString& image)
 {
-    QToolButton *button = new QToolButton;
+    QToolButton* button = new QToolButton;
     button->setText(text);
     button->setIcon(QIcon(image));
     button->setIconSize(QSize(50, 50));
     button->setCheckable(true);
     backgroundButtonGroup->addButton(button);
 
-    QGridLayout *layout = new QGridLayout;
+    QGridLayout* layout = new QGridLayout;
     layout->addWidget(button, 0, 0, Qt::AlignHCenter);
     layout->addWidget(new QLabel(text), 1, 0, Qt::AlignCenter);
 
-    QWidget *widget = new QWidget;
+    QWidget* widget = new QWidget;
     widget->setLayout(layout);
 
     return widget;
@@ -842,23 +889,23 @@ QWidget *MainWindow::createBackgroundCellWidget(const QString &text, const QStri
 //! [28]
 
 //! [29]
-QWidget *MainWindow::createCellWidget(const QString &text, DiagramItem::DiagramType type)
+QWidget* MainWindow::createCellWidget(const QString& text, DiagramItem::DiagramType type)
 {
 
     DiagramItem item(type, itemMenu);
     QIcon icon(item.image());
 
-    QToolButton *button = new QToolButton;
+    QToolButton* button = new QToolButton;
     button->setIcon(icon);
     button->setIconSize(QSize(50, 50));
     button->setCheckable(true);
     buttonGroup->addButton(button, int(type));
 
-    QGridLayout *layout = new QGridLayout;
+    QGridLayout* layout = new QGridLayout;
     layout->addWidget(button, 0, 0, Qt::AlignHCenter);
     layout->addWidget(new QLabel(text), 1, 0, Qt::AlignCenter);
 
-    QWidget *widget = new QWidget;
+    QWidget* widget = new QWidget;
     widget->setLayout(layout);
 
     return widget;
@@ -866,17 +913,17 @@ QWidget *MainWindow::createCellWidget(const QString &text, DiagramItem::DiagramT
 //! [29]
 
 //! [30]
-QMenu *MainWindow::createColorMenu(const char *slot, QColor defaultColor)
+QMenu* MainWindow::createColorMenu(const char* slot, QColor defaultColor)
 {
     QList<QColor> colors;
     colors << Qt::black << Qt::white << Qt::red << Qt::blue << Qt::green << Qt::yellow;
     QStringList names;
     names << tr("black") << tr("white") << tr("red") << tr("blue") << tr("green")
-          << tr("yellow");
+        << tr("yellow");
 
-    QMenu *colorMenu = new QMenu(this);
+    QMenu* colorMenu = new QMenu(this);
     for (int i = 0; i < colors.count(); ++i) {
-        QAction *action = new QAction(names.at(i), this);
+        QAction* action = new QAction(names.at(i), this);
         action->setData(colors.at(i));
         action->setIcon(createColorIcon(colors.at(i)));
         connect(action, SIGNAL(triggered()), this, slot);
@@ -889,7 +936,7 @@ QMenu *MainWindow::createColorMenu(const char *slot, QColor defaultColor)
 //! [30]
 
 //! [31]
-QIcon MainWindow::createColorToolButtonIcon(const QString &imageFile, QColor color)
+QIcon MainWindow::createColorToolButtonIcon(const QString& imageFile, QColor color)
 {
     QPixmap pixmap(50, 80);
     pixmap.fill(Qt::transparent);
@@ -945,7 +992,11 @@ void MainWindow::openFile()
         return;
     }
     QDataStream in(&file);
+#ifdef QT_PAINTER
+    view->Read(in);
+#else
     scene->Read(in);
+#endif // QT_PAINTER
     file.close();
 
     //更改文档名称，标题改变
@@ -969,13 +1020,17 @@ void MainWindow::saveFile()
     }
     //将内存内容保存到文档中
     QFile file(m_sFileName);
-    if (!file.open(QIODevice::ReadWrite))
+    if (!file.open(QIODevice::WriteOnly))
     {
         qDebug() << "open file failed";
         return;
     }
     QDataStream out(&file);
-    scene->Save(out);
+#ifdef QT_PAINTER
+    if (view) view->Save(out);
+#else
+    if (scene) scene->Save(out);
+#endif // QT_PAINTER
     file.close();
     return;
 
@@ -1081,7 +1136,7 @@ void MainWindow::zoomIn()
 {
 #ifdef QT_PAINTER
     //放大 //QCAD-QPainter版本
-    view->Scale(1/0.618);
+    view->Scale(1 / 0.618);
 #endif // QT_PAINTER
 }
 
@@ -1097,7 +1152,7 @@ void MainWindow::zoomOut()
 void MainWindow::zoomAll()
 {
 #ifdef QT_PAINTER
-//QCAD-QPainter版本
+    //QCAD-QPainter版本
     qreal xmin = 1E10, ymin = 1E10, xmax = -1E10, ymax = -1E10;
     QList<MEntity*> lstItems = view->GetEntityList();
     if (lstItems.count() == 0)
@@ -1140,7 +1195,7 @@ void MainWindow::zoomAll()
     QRectF rect(lt, br);
     view->zoomRect(rect);
 #else
-   qreal xmin=1E10, ymin=1E10, xmax=-1E10, ymax=-1E10;
+    qreal xmin = 1E10, ymin = 1E10, xmax = -1E10, ymax = -1E10;
 
     QList<QGraphicsItem*> lstItems = scene->items();
     if (lstItems.count() == 0)
@@ -1186,11 +1241,21 @@ void MainWindow::unCheckAllCommand()
     drawEllipseAction->setChecked(false);
     drawPolygonAction->setChecked(false);
     drawTextAction->setChecked(false);
-	drawAnnotationAction->setChecked(false);
+    drawAnnotationAction->setChecked(false);
+    FilletweldAction->setChecked(false);
+    IweldAction->setChecked(false);
+    VweldAction->setChecked(false);
+    PlugweldAction->setChecked(false);
+    spotweldAction->setChecked(false);
+    standardAnnotationAction->setChecked(false);
+    standardAnnotationBAction->setChecked(false);
+    standardAnnotationCAction->setChecked(false);
+
 
     symetryEntityAction->setChecked(false);
     moveEntityAction->setChecked(false);
     rotateEntityAction->setChecked(false);
+    removeEntityAction->setChecked(false);
 
     zoomPanAction->setChecked(false);
     zoomWindowAction->setChecked(false);
@@ -1330,7 +1395,117 @@ void MainWindow::drawAnnotation()
 
 }
 
-//修改
+void MainWindow::filletWeld()
+{
+    FilletweldAction->setCheckable(true);
+    unCheckAllCommand();
+    FilletweldAction->setChecked(true);
+
+#ifdef QT_PAINTER
+    //QCAD-QPainter版本
+    view->filletWeld();
+#else
+    //scene->filletWeld();
+#endif // QT_PAINTER
+
+}
+
+
+void MainWindow::IWeld()
+{
+    IweldAction->setCheckable(true);
+    unCheckAllCommand();
+    IweldAction->setChecked(true);
+
+#ifdef QT_PAINTER
+    //QCAD-QPainter版本
+    view->IWeld();
+#else
+    //scene->IWeld();
+#endif // QT_PAINTER
+}
+
+void MainWindow::VWeld()
+{
+    VweldAction->setCheckable(true);
+    unCheckAllCommand();
+    VweldAction->setChecked(true);
+
+#ifdef QT_PAINTER
+    //QCAD-QPainter版本
+    view->VWeld();
+#else
+    //scene->filletWeld();
+#endif // QT_PAINTER
+}
+
+void MainWindow::PlugWeld()
+{
+    PlugweldAction->setCheckable(true);
+    unCheckAllCommand();
+    PlugweldAction->setChecked(true);
+
+#ifdef QT_PAINTER
+    //QCAD-QPainter版本
+    view->PlugWeld();
+#else
+    //scene->filletWeld();
+#endif // QT_PAINTER
+}
+
+void MainWindow::spotWeld()
+{
+    spotweldAction->setCheckable(true);
+    unCheckAllCommand();
+    spotweldAction->setChecked(true);
+
+#ifdef QT_PAINTER
+    //QCAD-QPainter版本
+    view->spotWeld();
+#else
+    //scene->filletWeld();
+#endif // QT_PAINTER
+}
+void MainWindow::standardAnnotation()
+{
+    standardAnnotationAction->setCheckable(true);
+    unCheckAllCommand();
+    standardAnnotationAction->setChecked(true);
+
+#ifdef QT_PAINTER
+    //QCAD-QPainter版本
+    view->standardA();
+#else
+    //scene->standardA();
+#endif // QT_PAINTER
+}
+void MainWindow::standardAnnotationB()
+{
+    standardAnnotationBAction->setCheckable(true);
+    unCheckAllCommand();
+    standardAnnotationBAction->setChecked(true);
+
+#ifdef QT_PAINTER
+    //QCAD-QPainter版本
+    view->standardB();
+#else
+    //scene->standardB();
+#endif // QT_PAINTER
+}
+
+void MainWindow::standardAnnotationC()
+{
+    standardAnnotationCAction->setCheckable(true);
+    unCheckAllCommand();
+    standardAnnotationCAction->setChecked(true);
+
+#ifdef QT_PAINTER
+    //QCAD-QPainter版本
+    view->standardC();
+#else
+    //scene->standardC();
+#endif // QT_PAINTER
+}
 void MainWindow::moveEntity()
 {
     moveEntityAction->setCheckable(true);
@@ -1378,16 +1553,20 @@ void MainWindow::symetryEntity()
 
 void MainWindow::removeEntity()
 {
+    removeEntityAction->setCheckable(true);
+    unCheckAllCommand();
+    removeEntityAction->setChecked(true);
+
 #ifdef QT_PAINTER
-        //QCAD-QPainter版本
-        ;
+    //QCAD-QPainter版本
+    view->remove();
 #else
     foreach(QGraphicsItem * pItem, scene->selectedItems())
     {
         scene->removeItem(pItem);
         delete pItem; //???
-}
+    }
 
 #endif // QT_PAINTER
-        //
+    //
 }

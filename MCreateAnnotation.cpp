@@ -4,7 +4,7 @@
 #include "QCADView.h"
 #include <QMouseEvent>
 
-MCreateAnnotation::MCreateAnnotation(QCADView* pDiagramScene, MAnnotation::AnnotationType annoType)
+MCreateAnnotation::MCreateAnnotation(QCADView* pDiagramScene, MAnnotation::AnnotationType annoType, MAnnotation::WeldingType WeldingType)
 	: m_begin(0, 0), m_middle(0, 0), m_end(0, 0), m_pAnnotation(NULL), m_createAnnoType(annoType)
 {
 	m_nStep = 0; // 初始化操作步为 0
@@ -12,9 +12,9 @@ MCreateAnnotation::MCreateAnnotation(QCADView* pDiagramScene, MAnnotation::Annot
 	m_annoData.type = annoType;
 	// Debug
 	m_annoData.obtainMethod = 2;
-	m_annoData.roughnessMin = "10";
-	m_annoData.roughnessMax = "50";
-	//
+	m_annoData.roughnessMin = "Ra 1.6";
+	m_annoData.roughnessMax = "Rz 12.5";
+	m_annoData.weldingType = WeldingType;
 	if (annoType == MAnnotation::atRoughness)
 	{
 		m_promptPrefix = QStringLiteral("请指定表面粗糙度标注的起点：");
@@ -40,7 +40,27 @@ MCreateAnnotation::~MCreateAnnotation()
 
 int MCreateAnnotation::GetType()
 {
-	return ctCreateAnnotation;
+	if (m_annoData.type == MAnnotation::atRoughness)
+		return ctCreateAnnotation;
+	else if (m_annoData.type == MAnnotation::atWelding && m_annoData.weldingType == MAnnotation::FilletWeld)
+		return ctCreateFilletWeld;
+	else if (m_annoData.type == MAnnotation::atWelding && m_annoData.weldingType == MAnnotation::IWeld)
+		return ctCreateIWeld;
+	else if (m_annoData.type == MAnnotation::atWelding && m_annoData.weldingType == MAnnotation::VWeld)
+		return ctCreateVWeld;
+	else if (m_annoData.type == MAnnotation::atWelding && m_annoData.weldingType == MAnnotation::PlugWeld)
+		return ctCreatePlugWeld;
+	else if (m_annoData.type == MAnnotation::atWelding && m_annoData.weldingType == MAnnotation::SpotWeld)
+		return ctCreatespotWeld;
+	else if (m_annoData.type == MAnnotation::atStandard) {
+		if (m_annoData.weldingType == MAnnotation::IWeld)
+			return ctCreateStandardA;
+		else if (m_annoData.weldingType == MAnnotation::VWeld)
+			return ctCreateStandardB;
+		else if (m_annoData.weldingType == MAnnotation::FilletWeld)
+			return ctCreateStandardC;
+		return ctCreateStandardA; // 默认返回A类型
+	}
 }
 
 int MCreateAnnotation::OnLButtonDown(QMouseEvent* mouseEvent)

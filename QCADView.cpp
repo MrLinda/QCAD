@@ -187,6 +187,15 @@ void QCADView::removeLastEntity()
 	m_EntityList.pop_back();
 }
 
+void QCADView::remove()
+{
+	foreach(MEntity * pEnt, m_SelectEntityList) {
+		Addremove(pEnt);
+	}
+	m_SelectEntityList.clear();
+
+}
+
 void QCADView::selectEntity()
 {
 	if (m_pCmd && m_pCmd->GetType() == ctSelect)
@@ -208,6 +217,11 @@ void QCADView::moveEntity()
 void QCADView::AddSelection(MEntity* pEnt)
 {
 	m_SelectEntityList.push_back(pEnt);
+}
+
+void QCADView::Addremove(MEntity* pEnt)
+{
+	m_removeEntityList.push_back(pEnt);
 }
 
 void QCADView::RemoveSelection(MEntity* pEnt)
@@ -290,7 +304,76 @@ void QCADView::drawAnnotation()
 	if (m_pCmd && m_pCmd->GetType() == ctCreateAnnotation)
 		return;
 	delete m_pCmd;
-	m_pCmd = new MCreateAnnotation(this, MAnnotation::atRoughness);	//默认粗糙度
+	m_pCmd = new MCreateAnnotation(this, MAnnotation::atRoughness, MAnnotation::FilletWeld);//默认值;
+}
+
+void QCADView::filletWeld()
+{
+	//QPainter pDC(this);
+	if (m_pCmd && m_pCmd->GetType() == ctCreateFilletWeld)
+		return;
+	delete m_pCmd;
+	m_pCmd = new MCreateAnnotation(this, MAnnotation::atWelding, MAnnotation::FilletWeld);//角焊;
+}
+
+void QCADView::IWeld()
+{
+	//QPainter pDC(this);
+	if (m_pCmd && m_pCmd->GetType() == ctCreateIWeld)
+		return;
+	delete m_pCmd;
+	m_pCmd = new MCreateAnnotation(this, MAnnotation::atWelding, MAnnotation::IWeld);//I焊;
+}
+void QCADView::VWeld()
+{
+	//QPainter pDC(this);
+	if (m_pCmd && m_pCmd->GetType() == ctCreateVWeld)
+		return;
+	delete m_pCmd;
+	m_pCmd = new MCreateAnnotation(this, MAnnotation::atWelding, MAnnotation::VWeld);//V焊;
+}
+void QCADView::PlugWeld()
+{
+	//QPainter pDC(this);
+	if (m_pCmd && m_pCmd->GetType() == ctCreatePlugWeld)
+		return;
+	delete m_pCmd;
+	m_pCmd = new MCreateAnnotation(this, MAnnotation::atWelding, MAnnotation::PlugWeld);//塞焊;
+}
+void QCADView::spotWeld()
+{
+	//QPainter pDC(this);
+	if (m_pCmd && m_pCmd->GetType() == ctCreatespotWeld)
+		return;
+	delete m_pCmd;
+	m_pCmd = new MCreateAnnotation(this, MAnnotation::atWelding, MAnnotation::SpotWeld);//点焊;
+}
+
+void QCADView::standardA()
+{
+	//QPainter pDC(this);
+	if (m_pCmd && m_pCmd->GetType() == ctCreateStandardA)
+		return;
+	delete m_pCmd;
+	m_pCmd = new MCreateAnnotation(this, MAnnotation::atStandard, MAnnotation::IWeld); // 基准标注A
+}
+
+void QCADView::standardB()
+{
+	//QPainter pDC(this);
+	if (m_pCmd && m_pCmd->GetType() == ctCreateStandardB)
+		return;
+	delete m_pCmd;
+	m_pCmd = new MCreateAnnotation(this, MAnnotation::atStandard, MAnnotation::VWeld); // 基准标注B
+}
+
+void QCADView::standardC()
+{
+	//QPainter pDC(this);
+	if (m_pCmd && m_pCmd->GetType() == ctCreateStandardC)
+		return;
+	delete m_pCmd;
+	m_pCmd = new MCreateAnnotation(this, MAnnotation::atStandard, MAnnotation::FilletWeld); // 基准标注C
 }
 
 void QCADView::setScale(double scale)
@@ -407,4 +490,67 @@ void QCADView::zoomWindow()
 
 	delete m_pCmd;
 	m_pCmd = new MZoomWindow(this);
+}
+
+void QCADView::Save(QDataStream& out)
+{
+	out << (qint32)m_EntityList.size();
+	foreach(MEntity * pEnt, m_EntityList)
+	{
+		out << (qint32)pEnt->GetType();
+		pEnt->Serialize(out, true);
+	}
+}
+
+void QCADView::Read(QDataStream& in)
+{
+	// 清空现有实体
+	foreach(MEntity * pEnt, m_EntityList)
+	{
+		delete pEnt;
+	}
+	m_EntityList.clear();
+
+	qint32 count;
+	in >> count;
+	for (int i = 0; i < count; ++i)
+	{
+		qint32 type;
+		in >> type;
+		MEntity* pEnt = nullptr;
+		switch ((EEntityType)type)
+		{
+		case EEntityType::etLine:
+			pEnt = new MLine();
+			break;
+		case EEntityType::etRectangle:
+			pEnt = new MRectangle();
+			break;
+		case EEntityType::etCircle:
+			pEnt = new CCircle();
+			break;
+		case EEntityType::etArc:
+			pEnt = new CArc();
+			break;
+		case EEntityType::etEllipse:
+			pEnt = new MEllipse();
+			break;
+		case EEntityType::etPolygon:
+			pEnt = new MPolygon();
+			break;
+		case EEntityType::etText:
+			pEnt = new MText();
+			break;
+		case EEntityType::etAnnotation:
+			pEnt = new MAnnotation();
+			break;
+			// 根据需要为其他实体类型添加 case
+		}
+		if (pEnt)
+		{
+			pEnt->Serialize(in, false);
+			m_EntityList.append(pEnt);
+		}
+	}
+	update();
 }

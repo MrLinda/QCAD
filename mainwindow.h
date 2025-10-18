@@ -32,23 +32,23 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-   MainWindow();
+    MainWindow();
 
 public slots:
-   //选择命令...
-   void selectEntity();
+    //选择命令...
+    void selectEntity();
 private slots:
-    void backgroundButtonGroupClicked(QAbstractButton *button);
+    void backgroundButtonGroupClicked(QAbstractButton* button);
     void buttonGroupClicked(int id);
     void deleteItem();
     void pointerGroupClicked(int id);
     void bringToFront();
     void sendToBack();
-    void itemInserted(DiagramItem *item);
-    void textInserted(QGraphicsTextItem *item);
-    void currentFontChanged(const QFont &font);
-    void fontSizeChanged(const QString &size);
-    void sceneScaleChanged(const QString &scale);
+    void itemInserted(DiagramItem* item);
+    void textInserted(QGraphicsTextItem* item);
+    void currentFontChanged(const QFont& font);
+    void fontSizeChanged(const QString& size);
+    void sceneScaleChanged(const QString& scale);
     void textColorChanged();
     void itemColorChanged();
     void lineColorChanged();
@@ -56,7 +56,7 @@ private slots:
     void fillButtonTriggered();
     void lineButtonTriggered();
     void handleFontChange();
-    void itemSelected(QGraphicsItem *item);
+    void itemSelected(QGraphicsItem* item);
     void about();
 
     //file
@@ -78,8 +78,15 @@ private slots:
     void drawEllipse();
     void drawPolygon();
     void drawText();
-	void drawAnnotation();
-
+    void drawAnnotation();
+    void filletWeld();
+    void IWeld();
+    void VWeld();
+    void PlugWeld();
+    void spotWeld();
+    void standardAnnotation();
+    void standardAnnotationB();
+    void standardAnnotationC();
     //修改
     void moveEntity();
     void rotateEntity();
@@ -89,7 +96,7 @@ private slots:
     //视窗
     void zoomWindow();
     void zoomPan();
-    
+
     //线型
     void lineTypeChanged(QString sType);
     void lineWidChanged(QString sType);
@@ -100,67 +107,68 @@ private:
     void createActions();
     void createMenus();
     void createToolbars();
-    QWidget *createBackgroundCellWidget(const QString &text,
-                                        const QString &image);
-    QWidget *createCellWidget(const QString &text,
-                              DiagramItem::DiagramType type);
-    QMenu *createColorMenu(const char *slot, QColor defaultColor);
-    QIcon createColorToolButtonIcon(const QString &image, QColor color);
+    QWidget* createBackgroundCellWidget(const QString& text,
+        const QString& image);
+    QWidget* createCellWidget(const QString& text,
+        DiagramItem::DiagramType type);
+    QMenu* createColorMenu(const char* slot, QColor defaultColor);
+    QIcon createColorToolButtonIcon(const QString& image, QColor color);
     QIcon createColorIcon(QColor color);
 
-    DiagramScene *scene;
+    DiagramScene* scene;
 
 #ifdef QT_PAINTER
-    QCADView *view;
+    QCADView* view;
 #else
     QGraphicsView* view;
 #endif // QT_PAINTER
 
-    QAction *exitAction;
-    QAction *addAction;
-    QAction *deleteAction;
+    QAction* exitAction;
+    QAction* addAction;
+    QAction* deleteAction;
 
-    QAction *toFrontAction;
-    QAction *sendBackAction;
-    QAction *aboutAction;
+    QAction* toFrontAction;
+    QAction* sendBackAction;
+    QAction* aboutAction;
 
-    QMenu *fileMenu;
-    QMenu *itemMenu;
-    QMenu *aboutMenu;
+    QMenu* fileMenu;
+    QMenu* itemMenu;
+    QMenu* aboutMenu;
+    QMenu* SymbolAnnotationMenu;
 
-    QToolBar *textToolBar;
-    QToolBar *editToolBar;
-    QToolBar *colorToolBar;
-    QToolBar *pointerToolbar;
+    QToolBar* textToolBar;
+    QToolBar* editToolBar;
+    QToolBar* colorToolBar;
+    QToolBar* pointerToolbar;
     //new tool bar
     QToolBar* fileToolBar;
     QToolBar* drawToolBar;
     QToolBar* modifyToolBar;
     QToolBar* zoomToolBar;
     QToolBar* attribToolbar;
+    QToolBar* annotationToolbar;
 
-
-    QComboBox *sceneScaleCombo;
-    QComboBox *itemColorCombo;
-    QComboBox *textColorCombo;
-    QComboBox *fontSizeCombo;
-    QFontComboBox *fontCombo;
+    QComboBox* sceneScaleCombo;
+    QComboBox* itemColorCombo;
+    QComboBox* textColorCombo;
+    QComboBox* fontSizeCombo;
+    QFontComboBox* fontCombo;
     QComboBox* lineTypeCombo;//
     QComboBox* lineWidCombo;//
 
-    QToolBox *toolBox;
-    QButtonGroup *buttonGroup;
-    QButtonGroup *pointerTypeGroup;
-    QButtonGroup *backgroundButtonGroup;
-    QToolButton *fontColorToolButton;
-    QToolButton *fillColorToolButton;
-    QToolButton *lineColorToolButton;
-    QAction *boldAction;
-    QAction *underlineAction;
-    QAction *italicAction;
-    QAction *textAction;
-    QAction *fillAction;
-    QAction *lineAction;
+    QToolBox* toolBox;
+    QButtonGroup* buttonGroup;
+    QButtonGroup* pointerTypeGroup;
+    QButtonGroup* backgroundButtonGroup;
+    QToolButton* fontColorToolButton;
+    QToolButton* fillColorToolButton;
+    QToolButton* lineColorToolButton;
+    QAction* boldAction;
+    QAction* underlineAction;
+    QAction* italicAction;
+    QAction* textAction;
+    QAction* fillAction;
+    QAction* lineAction;
     //File Action
     QAction* newFileAction;
     QAction* openFileAction;
@@ -174,7 +182,6 @@ private:
     QAction* drawEllipseAction;
     QAction* drawPolygonAction;
     QAction* drawTextAction;
-	QAction* drawAnnotationAction;
     //Modify Action
     QAction* selectEntityAction;
     QAction* regenEntityAction;
@@ -188,7 +195,16 @@ private:
     QAction* zoomAllAction;
     QAction* zoomWindowAction;
     QAction* zoomPanAction;
-
+    //annotation Actions
+    QAction* drawAnnotationAction;
+    QAction* FilletweldAction;
+    QAction* IweldAction;
+    QAction* VweldAction;
+    QAction* PlugweldAction;
+    QAction* spotweldAction;
+    QAction* standardAnnotationAction;
+    QAction* standardAnnotationBAction;
+    QAction* standardAnnotationCAction;
 private:
     QString m_sFileName;
 };

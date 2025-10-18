@@ -582,6 +582,15 @@ public:
 		atRoughness = 0,		// 表面粗糙度
 		atStandard = 1,			// 基准
 		atWelding = 2,			// 焊接
+		atUnWork = 3,//不工作
+	};
+	enum  WeldingType      //焊接类型
+	{
+		FilletWeld = 0,        // 角焊
+		IWeld = 1,          // I型焊
+		VWeld = 2,          //V型焊
+		PlugWeld = 3,          // 塞焊
+		SpotWeld = 4,          // 点焊
 	};
 	// 标注数据
 	struct AnnotationData
@@ -600,6 +609,7 @@ public:
 		// 基准
 		QString standardName;	// 基准名称
 		// 焊接
+		WeldingType weldingType; // 焊接类型
 		QString weldingName;	// 焊接名称
 	};
 	AnnotationData m_annoData;
@@ -646,10 +656,10 @@ public:
 	//void Move(const QPointF& basePos, const QPointF& desPos, bool bTemp = false);
 	//void Rotate(const QPointF& basePos, const double angle);
 	//void Mirror(const QPointF& FstPos, const QPointF& SecPos);
-	//void GetBox(QRectF& pBox);
-
+	void GetBox(QRectF& pBox);
+	bool IsInRect(const QPointF& pos, const QPointF& pos1);
 	//void LoadPmtCursor() {}
-	//void Serialize(QDataStream& ar, bool bSave);
+	void Serialize(QDataStream& ar, bool bSave);
 };
 
 #endif
