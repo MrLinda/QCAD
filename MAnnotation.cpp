@@ -97,7 +97,7 @@ bool MAnnotation::GetSnapPos(QPointF& pos)
 void MAnnotation::Draw(QCADView* pView, int drawMode)
 {
 	QPainter pDC(pView);
-	if(drawMode == dmNormal)
+	if (drawMode == dmNormal)
 	{
 		// 清理旧的实体
 		for (MEntity* entity : entities) {
@@ -158,7 +158,7 @@ void MAnnotation::Draw(QCADView* pView, int drawMode)
 			}
 
 			// 画水平线
-			if(drawLeader)
+			if (drawLeader)
 			{
 				entities.push_back(new MLine(m_middle, m_end));
 			}
@@ -227,7 +227,7 @@ void MAnnotation::Draw(QCADView* pView, int drawMode)
 			MText* pTextMax = new MText();
 			pTextMin->SetFont(realFont);
 			pTextMax->SetFont(realFont);
-			if(!m_annoData.roughnessMin.isEmpty() && !m_annoData.roughnessMax.isEmpty())
+			if (!m_annoData.roughnessMin.isEmpty() && !m_annoData.roughnessMax.isEmpty())
 			{
 				// 最小值和最大值都不为空
 				int textWidthMin = metrics.horizontalAdvance(m_annoData.roughnessMin) / scale;
@@ -244,7 +244,7 @@ void MAnnotation::Draw(QCADView* pView, int drawMode)
 				pTextMax->SetLeftTopPos(textUpperLeftTop);
 				pTextMax->SetRightBottomPos(textUpperLeftTop + QPointF(textWidthMax, -textHeight));
 
-				MLine* pLine = new MLine(signP3, signP3 + QPointF(fmax(textWidthMin, textWidthMax),0));
+				MLine* pLine = new MLine(signP3, signP3 + QPointF(fmax(textWidthMin, textWidthMax), 0));
 
 				entities.push_back(pTextMin);
 				entities.push_back(pTextMax);
@@ -295,8 +295,13 @@ void MAnnotation::Draw(QCADView* pView, int drawMode)
 			entities.push_back(new MLine(m_begin, m_middle));
 			entities.push_back(new MLine(m_middle, m_end));
 
-			qreal boxSize = 15;
-			qreal offset = boxSize * 1.2;
+			// 参照粗糙度标注的实现方式，设置字体和文本显示
+			QFont realFont = QFont(m_font.family(), m_font.pointSize() * pView->GetScale());
+			QFontMetrics metrics(realFont);
+			qreal scale = pView->GetScale();
+			qreal textHeight = metrics.height() / scale; // 文本高度
+
+			// 计算文本位置
 
 			QPointF lineDirection = m_end - m_middle;
 			QPointF perpendicularDir(-lineDirection.y(), lineDirection.x());
@@ -304,64 +309,37 @@ void MAnnotation::Draw(QCADView* pView, int drawMode)
 			if (length > 0) {
 				perpendicularDir /= length;
 			}
+			qreal boxSize = textHeight * 1.5; // 根据文本高度调整方框大小
+			qreal offset = boxSize * 1.2; // 偏移量
+
+			// 计算方框位置
 
 			QPointF midPoint = (m_middle + m_end) / 2;
 			QPointF boxTopLeft = midPoint + perpendicularDir * offset - QPointF(boxSize / 2, boxSize);
 
-			QPointF boxTopRight = QPointF(boxTopLeft.x() + boxSize, boxTopLeft.y());
-			QPointF boxBottomLeft = QPointF(boxTopLeft.x(), boxTopLeft.y() + boxSize);
-			QPointF boxBottomRight = QPointF(boxTopLeft.x() + boxSize, boxTopLeft.y() + boxSize);
+			// 绘制方框
+			entities.push_back(new MLine(boxTopLeft, QPointF(boxTopLeft.x() + boxSize, boxTopLeft.y())));
+			entities.push_back(new MLine(QPointF(boxTopLeft.x() + boxSize, boxTopLeft.y()), QPointF(boxTopLeft.x() + boxSize, boxTopLeft.y() + boxSize)));
+			entities.push_back(new MLine(QPointF(boxTopLeft.x() + boxSize, boxTopLeft.y() + boxSize), QPointF(boxTopLeft.x(), boxTopLeft.y() + boxSize)));
+			entities.push_back(new MLine(QPointF(boxTopLeft.x(), boxTopLeft.y() + boxSize), boxTopLeft));
 
-			entities.push_back(new MLine(boxTopLeft, boxTopRight));
-			entities.push_back(new MLine(boxTopRight, boxBottomRight));
-			entities.push_back(new MLine(boxBottomRight, boxBottomLeft));
-			entities.push_back(new MLine(boxBottomLeft, boxTopLeft));
+			// 显示文本而不是绘制线条图标
+			if (!m_annoData.standardName.isEmpty()) {
+				MText* pText = new MText();
+				pText->SetFont(realFont);
+				pText->SetText(m_annoData.standardName);
 
-			qreal aSize = boxSize * 0.6;
-			qreal aOffset = (boxSize - aSize) / 2;
+				// 计算文本尺寸
+				int textWidth = metrics.horizontalAdvance(m_annoData.standardName) / scale;
 
-			// 注意：这里假设 m_annoData.weldingType 存在且用于基准类型区分
-			// 如果实际结构不同，请根据实际情况修改判断逻辑
-			// 假设 IWeld, VWeld, FilletWeld 代表基准 A, B, C
-			if (m_annoData.weldingType == IWeld) { // 基准A
-				QPointF aBottom = QPointF(boxTopLeft.x() + aOffset + aSize / 2, boxTopLeft.y() + aOffset + aSize);
-				QPointF aLeft = QPointF(boxTopLeft.x() + aOffset, boxTopLeft.y() + aOffset);
-				QPointF aRight = QPointF(boxTopLeft.x() + aOffset + aSize, boxTopLeft.y() + aOffset);
-				QPointF aMid = QPointF(boxTopLeft.x() + aOffset + aSize / 3, boxTopLeft.y() + aOffset + aSize / 2);
-				QPointF aMid2 = QPointF(boxTopLeft.x() + aOffset + 2 * aSize / 3, boxTopLeft.y() + aOffset + aSize / 2);
+				// 设置文本位置，使其在方框中居中显示
+				QPointF textLeftTop = QPointF(boxTopLeft.x() + (boxSize - textWidth) / 2, boxTopLeft.y() + (boxSize - textHeight) / 2);
+				pText->SetLeftTopPos(textLeftTop);
+				pText->SetRightBottomPos(textLeftTop + QPointF(textWidth, textHeight));
 
-				entities.push_back(new MLine(aBottom, aLeft));
-				entities.push_back(new MLine(aBottom, aRight));
-				entities.push_back(new MLine(aMid, aMid2));
+				entities.push_back(pText);
 			}
-			else if (m_annoData.weldingType == VWeld) { // 基准B
-				QPointF leftTop = QPointF(boxTopLeft.x() + aOffset, boxTopLeft.y() + aOffset);
-				QPointF leftBottom = QPointF(boxTopLeft.x() + aOffset, boxTopLeft.y() + aOffset + aSize);
-				QPointF middle = QPointF(boxTopLeft.x() + aOffset + aSize / 2, boxTopLeft.y() + aOffset + aSize / 2);
-				QPointF rightTop = QPointF(boxTopLeft.x() + aOffset + aSize, boxTopLeft.y() + aOffset);
-				QPointF rightMiddle = QPointF(boxTopLeft.x() + aOffset + aSize, boxTopLeft.y() + aOffset + aSize / 2);
-				QPointF rightBottom = QPointF(boxTopLeft.x() + aOffset + aSize, boxTopLeft.y() + aOffset + aSize);
 
-				entities.push_back(new MLine(leftTop, leftBottom));
-				entities.push_back(new MLine(leftTop, rightTop));
-				entities.push_back(new MLine(leftTop, middle));
-				entities.push_back(new MLine(middle, rightMiddle));
-				entities.push_back(new MLine(middle, rightBottom));
-				entities.push_back(new MLine(leftBottom, rightBottom));
-			}
-			else if (m_annoData.weldingType == FilletWeld) { // 基准C
-				qreal radius = aSize / 3;
-				QPointF centerTop = QPointF(boxTopLeft.x() + aOffset + aSize / 2, boxTopLeft.y() + aOffset + radius);
-				QPointF centerBottom = QPointF(boxTopLeft.x() + aOffset + aSize / 2, boxTopLeft.y() + aOffset + aSize - radius);
-				QPointF start = QPointF(boxTopLeft.x() + aOffset, boxTopLeft.y() + aOffset + radius);
-				QPointF mid1 = QPointF(boxTopLeft.x() + aOffset, boxTopLeft.y() + aOffset + aSize / 2);
-				QPointF end = QPointF(boxTopLeft.x() + aOffset, boxTopLeft.y() + aOffset + aSize - radius);
-
-				entities.push_back(new MLine(start, mid1));
-				entities.push_back(new MLine(mid1, end));
-				entities.push_back(new MLine(start, QPointF(start.x() + radius, start.y() - radius)));
-				entities.push_back(new MLine(end, QPointF(end.x() + radius, end.y() + radius)));
-			}
 		}
 		else if (m_annoData.type == atWelding)
 		{
@@ -466,11 +444,11 @@ void MAnnotation::Draw(QCADView* pView, int drawMode)
 			entities.push_back(new MLine(P1, P2));
 			entities.push_back(new MLine(P3, P4));
 			entities.push_back(new MLine(P5, P6));
-			}
+		}
 	} // end of dmNormal
 
 	// 在 dmSelect 或其他模式下，绘制已生成的实体
-	foreach(MEntity* entity, entities) {
+	foreach(MEntity * entity, entities) {
 		if (entity) {
 			if (drawMode == dmSelect) {
 				// 为选中状态设置特殊画笔
@@ -496,7 +474,7 @@ void MAnnotation::Draw(QCADView* pView, int drawMode)
 
 bool MAnnotation::Pick(const QPointF& pos, const double pick_radius)
 {
-	foreach (MEntity* entity, entities) {
+	foreach(MEntity * entity, entities) {
 		if (entity->Pick(pos, pick_radius)) {
 			return true;
 		}

@@ -85,8 +85,6 @@ private slots:
     void PlugWeld();
     void spotWeld();
     void standardAnnotation();
-    void standardAnnotationB();
-    void standardAnnotationC();
     //ÐÞ¸Ä
     void moveEntity();
     void rotateEntity();
@@ -203,8 +201,6 @@ private:
     QAction* PlugweldAction;
     QAction* spotweldAction;
     QAction* standardAnnotationAction;
-    QAction* standardAnnotationBAction;
-    QAction* standardAnnotationCAction;
 private:
     QString m_sFileName;
 };

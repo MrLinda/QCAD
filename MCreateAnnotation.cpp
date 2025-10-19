@@ -15,6 +15,7 @@ MCreateAnnotation::MCreateAnnotation(QCADView* pDiagramScene, MAnnotation::Annot
 	m_annoData.roughnessMin = "Ra 1.6";
 	m_annoData.roughnessMax = "Rz 12.5";
 	m_annoData.weldingType = WeldingType;
+	m_annoData.standardName = "A";// 设置基准标注的默认文本值为"A"
 	if (annoType == MAnnotation::atRoughness)
 	{
 		m_promptPrefix = QStringLiteral("请指定表面粗糙度标注的起点：");
@@ -53,12 +54,6 @@ int MCreateAnnotation::GetType()
 	else if (m_annoData.type == MAnnotation::atWelding && m_annoData.weldingType == MAnnotation::SpotWeld)
 		return ctCreatespotWeld;
 	else if (m_annoData.type == MAnnotation::atStandard) {
-		if (m_annoData.weldingType == MAnnotation::IWeld)
-			return ctCreateStandardA;
-		else if (m_annoData.weldingType == MAnnotation::VWeld)
-			return ctCreateStandardB;
-		else if (m_annoData.weldingType == MAnnotation::FilletWeld)
-			return ctCreateStandardC;
 		return ctCreateStandardA; // 默认返回A类型
 	}
 }

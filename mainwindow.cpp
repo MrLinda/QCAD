@@ -567,13 +567,6 @@ void MainWindow::createActions()
     standardAnnotationAction->setStatusTip(QStringLiteral("基准标注A"));
     connect(standardAnnotationAction, SIGNAL(triggered()), this, SLOT(standardAnnotation()));
 
-    standardAnnotationBAction = new QAction(QIcon("images/standardB.png"), QStringLiteral("基准标注B"), this);
-    standardAnnotationBAction->setStatusTip(QStringLiteral("基准标注B"));
-    connect(standardAnnotationBAction, SIGNAL(triggered()), this, SLOT(standardAnnotationB()));
-
-    standardAnnotationCAction = new QAction(QIcon("images/standardC.png"), QStringLiteral("基准标注C"), this);
-    standardAnnotationCAction->setStatusTip(QStringLiteral("基准标注C"));
-    connect(standardAnnotationCAction, SIGNAL(triggered()), this, SLOT(standardAnnotationC()));
     /// <summary>
     /// Modify Actions
     /// </summary>
@@ -751,8 +744,7 @@ void MainWindow::createToolbars()
     annotationToolbar->addAction(PlugweldAction);
     annotationToolbar->addAction(spotweldAction);
     annotationToolbar->addAction(standardAnnotationAction);
-    annotationToolbar->addAction(standardAnnotationBAction);
-    annotationToolbar->addAction(standardAnnotationCAction);
+
     // 5.属性：线型，颜色，宽度
     //线型：实线、虚线、点划线
     lineTypeCombo = new QComboBox;
@@ -1248,8 +1240,6 @@ void MainWindow::unCheckAllCommand()
     PlugweldAction->setChecked(false);
     spotweldAction->setChecked(false);
     standardAnnotationAction->setChecked(false);
-    standardAnnotationBAction->setChecked(false);
-    standardAnnotationCAction->setChecked(false);
 
 
     symetryEntityAction->setChecked(false);
@@ -1479,33 +1469,7 @@ void MainWindow::standardAnnotation()
     //scene->standardA();
 #endif // QT_PAINTER
 }
-void MainWindow::standardAnnotationB()
-{
-    standardAnnotationBAction->setCheckable(true);
-    unCheckAllCommand();
-    standardAnnotationBAction->setChecked(true);
 
-#ifdef QT_PAINTER
-    //QCAD-QPainter版本
-    view->standardB();
-#else
-    //scene->standardB();
-#endif // QT_PAINTER
-}
-
-void MainWindow::standardAnnotationC()
-{
-    standardAnnotationCAction->setCheckable(true);
-    unCheckAllCommand();
-    standardAnnotationCAction->setChecked(true);
-
-#ifdef QT_PAINTER
-    //QCAD-QPainter版本
-    view->standardC();
-#else
-    //scene->standardC();
-#endif // QT_PAINTER
-}
 void MainWindow::moveEntity()
 {
     moveEntityAction->setCheckable(true);
